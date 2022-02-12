@@ -14,6 +14,11 @@ botinfo = json.loads(file.read())
 prefix = botinfo["prefix"]
 bot = commands.Bot(command_prefix=prefix)
 
+@bot.event
+async def on_ready():
+    print("The bot is online!")
+    print(f"Currently online on {len(list(bot.guilds))} servers!")
+
 # Loading command Cogs
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py') and not filename.startswith('base_'):
