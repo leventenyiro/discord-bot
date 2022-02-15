@@ -1,1 +1,0 @@
-spotify_token = "BQASfIEvp-VFJzaIIcr4aSJuVCg4psXoZhPb1_RXyxcz4R_buKC-gqDsy6QuuReuxUEl_8cODfGJDGqH7qVVFCFAR4ZWlemwMhre4nIp6kVd123Ndy7WTwZXYS6_6IIHnCTrSxdx0Kn8Ct0jr4r75do3_8zTDb4ojZ2PWw"
