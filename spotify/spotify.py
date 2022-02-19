@@ -4,8 +4,8 @@ import json
 from base64 import b64encode
 
 class Spotify:
-    def __init__(self, url):
-
+    @staticmethod
+    def get_track(url):
         # Get bearer token
 
         file = open("./botconfig.json", "r")
@@ -20,10 +20,9 @@ class Spotify:
         track_id = urlparse(url).path.split('/')[2]
         endpoint = f'https://api.spotify.com/v1/tracks/{track_id}'
         headers = {'Authorization': f'Bearer {response_auth.json()["access_token"]}'}
-        self.response = requests.get(endpoint, headers=headers)
+        response = requests.get(endpoint, headers=headers)
 
-    def get_track(self):
-        track = self.response.json()
+        track = response.json()
         try:
             return track["artists"][0]["name"] + " - " + track["name"]
         except:

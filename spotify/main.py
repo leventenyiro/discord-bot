@@ -1,5 +1,3 @@
-import spotify as spotify
+from spotify import Spotify
 
-spotify = spotify.Spotify("https://open.spotify.com/track/0UpFAK2INHCzYwhYKwTusv?si=28fa0a3b23814811")
-
-print(spotify.get_track())
+print(Spotify.get_track("https://open.spotify.com/track/0UpFAK2INHCzYwhYKwTusv?si=28fa0a3b23814811"))
