@@ -8,6 +8,9 @@ class MusicBot:
         self.servers = {}
 
     async def connect(self, ctx):
+        # TO DO
+        # INTERNET ISSUE IS STILL RELEVANT
+
         # checks if the bot is already in a voice channel on the server or not
         try:
             server = self.servers[ctx.guild.id]
@@ -36,3 +39,41 @@ class MusicBot:
         await text_channel.send(f'Csatlakoztam a {voice_channel.name} szobába!')
         await text_channel.send(f'A parancsok mostantól a {text_channel.name} szobában érhetőek el!')
         return await voice_channel.connect()
+    
+    async def disconnect(self, ctx):
+        # TO DO:
+        # DELETING TEXT CHANNEL WHILE THE BOT IS ONLINE
+
+        # checks if the bot is in a voice channel on the server or not
+        try:
+            server = self.servers[ctx.guild.id]
+        except KeyError:
+            return await ctx.send('Nem vagyok fent egy szobában sem!')
+        # checks whether the user is on a voice channel or not
+        if not ctx.author.voice.channel:
+            return await ctx.send('Voice channelben kell lenned, hogy le tudj csatlakoztatni!')
+        # checks if the command has been called from the same text channel, which it has been initialized
+        # if the text channel is none ()
+        text_channel = server['message_channel']
+        if text_channel is not None and ctx.channel.id != text_channel.id:
+            return await ctx.channel.send(f'A parancsok a {text_channel.name} szobában érhetőek el!')
+        # checks if the user is in the same channel or not
+        voice_channel = server['voice_channel']
+        if ctx.author.voice.channel.id != voice_channel.id:
+            return await ctx.send('Nem vagyunk ugyanabban a szobában!')
+        await ctx.voice_client.disconnect()
+        Logger.info(f'Disconnected from {PromptColors.CGREENBG}{voice_channel.id}{PromptColors.CEND} voice channel on {PromptColors.CGREENBG}{ctx.channel.guild.id}{PromptColors.CEND} guild')
+        self.clear_server(ctx.guild.id)
+        return await text_channel.send(f'Lecsatlakozva!')
+    
+    def clear_server(self, id):
+        del self.servers[id]
+
+    def update_voice_channel(self, id, channel):
+        self.servers[id]['voice_channel'] = channel
+
+    def get_server(self, id):
+        try:
+            return self.servers[id]
+        except KeyError:
+            return False
