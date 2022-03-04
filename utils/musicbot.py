@@ -1,3 +1,4 @@
+import asyncio
 import discord
 from utils.logger import Logger
 from utils.promptcolor import PromptColors
@@ -8,9 +9,6 @@ class MusicBot:
         self.servers = {}
 
     async def connect(self, ctx):
-        # TO DO
-        # INTERNET ISSUE IS STILL RELEVANT
-
         # checks if the bot is already in a voice channel on the server or not
         try:
             server = self.servers[ctx.guild.id]
@@ -38,7 +36,11 @@ class MusicBot:
         Logger.info(f'Joined to {PromptColors.CGREENBG}{voice_channel.id}{PromptColors.CEND} voice channel on {PromptColors.CGREENBG}{ctx.channel.guild.id}{PromptColors.CEND} guild, using {PromptColors.CGREENBG}{text_channel.id}{PromptColors.CEND} text channel!')
         await text_channel.send(f'Csatlakoztam a {voice_channel.name} szobába!')
         await text_channel.send(f'A parancsok mostantól a {text_channel.name} szobában érhetőek el!')
-        return await voice_channel.connect()
+        try:
+            return await voice_channel.connect()
+        except asyncio.TimeoutError:
+            Logger.error(f'ERROR: Timeout while trying to join to {PromptColors.CGREENBG}{voice_channel.id}{PromptColors.CEND} voice channel on {PromptColors.CGREENBG}{ctx.channel.guild.id}{PromptColors.CEND} guild')
+            return await text_channel.send(f'A csatlakozás sikertelen volt!')
     
     async def disconnect(self, ctx):
         # TO DO:
