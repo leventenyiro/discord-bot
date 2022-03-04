@@ -31,7 +31,7 @@ class MusicBot:
         text_channel = ctx.channel
         self.servers[ctx.channel.guild.id] = {
             'voice_channel': voice_channel, 
-            'message_channel': text_channel
+            'text_channel': text_channel
         }
         Logger.info(f'Joined to {PromptColors.CGREENBG}{voice_channel.id}{PromptColors.CEND} voice channel on {PromptColors.CGREENBG}{ctx.channel.guild.id}{PromptColors.CEND} guild, using {PromptColors.CGREENBG}{text_channel.id}{PromptColors.CEND} text channel!')
         await text_channel.send(f'Csatlakoztam a {voice_channel.name} szobába!')
@@ -53,7 +53,7 @@ class MusicBot:
             return await ctx.send('Voice channelben kell lenned, hogy le tudj csatlakoztatni!')
         # checks if the command has been called from the same text channel, which it has been initialized
         # if the text channel is none ()
-        text_channel = server['message_channel']
+        text_channel = server['text_channel']
         if text_channel is not None and ctx.channel.id != text_channel.id:
             return await ctx.channel.send(f'A parancsok a {text_channel.name} szobában érhetőek el!')
         # checks if the user is in the same channel or not
@@ -69,7 +69,7 @@ class MusicBot:
         del self.servers[id]
 
     def clear_text_channel(self, id):
-        self.servers[id]['message_channel'] = None
+        self.servers[id]['text_channel'] = None
 
     def update_voice_channel(self, id, channel):
         self.servers[id]['voice_channel'] = channel
