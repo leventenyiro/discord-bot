@@ -1,5 +1,3 @@
-from utils.logger import Logger
-from utils.promptcolor import PromptColors
 from commands.music.connect import ConnectCommand
 from commands.music.disconnect import DisconnectCommand
 

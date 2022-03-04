@@ -1,5 +1,5 @@
-import discord
 from discord.ext import commands
+
 from utils.logger import Logger
 from utils.promptcolor import PromptColors
 

@@ -1,5 +1,5 @@
-import discord
 from discord.ext import commands
+
 from cogs.base_cog import BaseCog
 from music.musicbot import MusicBot
 from utils.logger import Logger
