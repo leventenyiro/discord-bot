@@ -1,5 +1,5 @@
-import discord
 from discord.ext import commands
+
 from cogs.base_cog import BaseCog
 
 class Basic(BaseCog):
