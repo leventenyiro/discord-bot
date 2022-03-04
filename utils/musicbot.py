@@ -1,4 +1,6 @@
 import discord
+from utils.logger import Logger
+from utils.promptcolor import PromptColors
 
 class MusicBot:
     def __init__(self, bot) -> None:
@@ -30,7 +32,7 @@ class MusicBot:
             'voice_channel': voice_channel, 
             'message_channel': text_channel
         }
-        print(f'Joined to {voice_channel.id} voice channel on {ctx.channel.guild.id} guild, using {text_channel.id}!')
+        Logger.info(f'Joined to {PromptColors.CGREENBG}{voice_channel.id}{PromptColors.CEND} voice channel on {PromptColors.CGREENBG}{ctx.channel.guild.id}{PromptColors.CEND} guild, using {PromptColors.CGREENBG}{text_channel.id}{PromptColors.CEND} text channel!')
         await text_channel.send(f'Csatlakoztam a {voice_channel.name} szobába!')
         await text_channel.send(f'A parancsok mostantól a {text_channel.name} szobában érhetőek el!')
         return await voice_channel.connect()
