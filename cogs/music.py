@@ -30,6 +30,16 @@ class Music(BaseCog):
         if after.channel is not None and before.channel is not None:
             Logger.warning(f'Bot has been force moved from {before.channel.id} to {after.channel.id}')
             self._music_bot.update_voice_channel(member.guild.id, after.channel)
+    
+    @commands.Cog.listener()
+    async def on_guild_channel_delete(self, channel):
+        guild = channel.guild
+        music_bot_chache = self._music_bot.get_server(guild.id)
+        if not music_bot_chache:
+            return
+        if channel.id != music_bot_chache['text_channel'].id:
+            return
+        self._music_bot.clear_text_channel()
 
 def setup(client):
     client.add_cog(Music(client))

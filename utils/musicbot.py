@@ -43,9 +43,6 @@ class MusicBot:
             return await text_channel.send(f'A csatlakozás sikertelen volt!')
     
     async def disconnect(self, ctx):
-        # TO DO:
-        # DELETING TEXT CHANNEL WHILE THE BOT IS ONLINE
-
         # checks if the bot is in a voice channel on the server or not
         try:
             server = self.servers[ctx.guild.id]
@@ -70,6 +67,9 @@ class MusicBot:
     
     def clear_server(self, id):
         del self.servers[id]
+
+    def clear_text_channel(self, id):
+        self.servers[id]['message_channel'] = None
 
     def update_voice_channel(self, id, channel):
         self.servers[id]['voice_channel'] = channel
