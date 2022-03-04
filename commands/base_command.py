@@ -13,6 +13,8 @@ class BaseCommand:
         pass
     
     async def run(self):
+        if not self.ctx.channel.guild.me.guild_permissions.send_messages:
+            return
         for (requirement, message) in self.required_permissions:
             if not requirement:
                 return await self.ctx.send(message)

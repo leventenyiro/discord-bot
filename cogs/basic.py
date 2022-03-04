@@ -8,6 +8,8 @@ class Basic(BaseCog):
 
     @commands.command()
     async def ping(self, ctx):
+        if not ctx.channel.guild.me.guild_permissions.send_messages:
+            return
         await ctx.send(f'Pong! {round(self.bot.latency*1000)} ms')
 
 def setup(client):
