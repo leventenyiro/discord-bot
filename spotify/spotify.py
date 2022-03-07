@@ -26,4 +26,4 @@ class Spotify:
         try:
             return track["artists"][0]["name"] + " - " + track["name"]
         except:
-            return "Error"
+            raise Exception("Invalid link")

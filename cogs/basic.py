@@ -14,12 +14,11 @@ class Basic(BaseCog):
 
     @commands.command()
     async def play(self, ctx, arg):
-        # Spotify recognization
-        if (contains(arg, 'spotify')):
-            # Teszt
-            await ctx.send(Spotify.get_track(arg))
-            # Itt küldi a kérelmet a youtube modulenak
-            # Spotify.get_track(arg)
+        if (contains(arg, 'https://open.spotify.com/track/')):
+            try:
+                await ctx.send(Spotify.get_track(arg))
+            except: # hibakezelés
+                await ctx.send()
 
 def setup(client):
     client.add_cog(Basic(client))
