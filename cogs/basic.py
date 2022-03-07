@@ -1,6 +1,7 @@
 from discord.ext import commands
 
 from cogs.base_cog import BaseCog
+from spotify.spotify import Spotify
 
 class Basic(BaseCog):
     def __init__(self, bot) -> None:
@@ -11,6 +12,14 @@ class Basic(BaseCog):
         if not ctx.channel.guild.me.guild_permissions.send_messages:
             return
         await ctx.send(f'Pong! {round(self.bot.latency*1000)} ms')
+
+    @commands.command()
+    async def play(self, ctx, arg):
+        if (contains(arg, 'https://open.spotify.com/track/')):
+            try:
+                await ctx.send(Spotify.get_track(arg))
+            except: # hibakezelés
+                await ctx.send()
 
 def setup(client):
     client.add_cog(Basic(client))
