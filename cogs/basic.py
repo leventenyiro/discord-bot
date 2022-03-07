@@ -1,3 +1,4 @@
+from operator import contains
 from discord.ext import commands
 
 from cogs.base_cog import BaseCog
