@@ -1,6 +1,6 @@
 import requests
-from urllib.parse import urlparse
 import json
+from urllib.parse import urlparse
 from base64 import b64encode
 
 class Spotify:
