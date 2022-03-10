@@ -17,10 +17,10 @@ class BaseCommand:
             return
         for (requirement, message) in self.required_permissions:
             if not requirement:
-                return await self.ctx.send(message)
+                return await self.ctx.send(embed = message)
         await self.logic()
         for res in self.response:
-            await self.ctx.send(res)
+            await self.ctx.send(embed = res)
 
     @abstractmethod
     async def logic(self):
