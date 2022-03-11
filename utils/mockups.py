@@ -1,6 +1,5 @@
 import collections
 from datetime import datetime
-from email.policy import default
 import unittest.mock
 import discord
 from discord.ext import commands
@@ -17,12 +16,10 @@ def _mocked_loop(type):
     return loop
 
 bot_data = {
-    'application_id': 123,
     'guilds': unittest.mock.MagicMock(),
     'intents': '',
     'latency': 0.001,
     'loop': _mocked_loop(asyncio.AbstractEventLoop),
-    'status': 'asd',
     'user': 'asd',
     'users': ['asd', 'asd2']
 }
@@ -32,19 +29,16 @@ guild_data = {
     'name': 'guild',
     'region': 'Europe',
     'verification_level': 2,
-    'default_notications': 1,
     'afk_timeout': 100,
     'icon': "icon.png",
     'banner': 'banner.png',
     'mfa_level': 1,
     'splash': 'splash.png',
-    'system_channel_id': 464033278631084042,
     'description': 'hello world',
     'max_presences': 10000,
     'max_members': 100000,
     'preferred_locale': 'UTC',
     'owner_id': 1,
-    'afk_channel_id': 464033278631084042,
 }
 
 voice_channel_data = {
@@ -84,7 +78,6 @@ channel_data = {
     'id': 1,
     'type': 'TextChannel',
     'name': 'General',
-    'parent_id': 6969696969,
     'topic': 'topic',
     'position': 1,
     'nsfw': False,
@@ -95,10 +88,11 @@ class RedefinedMockMixin:
     child_mock_type = unittest.mock.MagicMock
     additional_spec_asyncs = None
     default = {}
+    spec_set = None
 
     def __init__(self, **kwargs):
         name = kwargs.pop('name', None)
-        super().__init__(**kwargs)
+        super().__init__(spec_set=self.spec_set,**kwargs)
         if self.additional_spec_asyncs:
             self._spec_asyncs.extend(self.additional_spec_asyncs)
         if name:
@@ -119,19 +113,27 @@ class RedefinedMockMixin:
             raise AttributeError(mock_name)
         return klass(**kw)
 
+bot = commands.Bot(unittest.mock.MagicMock(), data=bot_data)
+guild = discord.Guild(data=guild_data, state=unittest.mock.MagicMock())
+voice_channel = discord.VoiceChannel(state=unittest.mock.MagicMock(), guild=unittest.mock.MagicMock(), data=voice_channel_data)
+voice_state = discord.VoiceState(data=voice_state_data, channel=unittest.mock.MagicMock())
+member = discord.Member(data=member_data, guild=unittest.mock.MagicMock(), state=unittest.mock.MagicMock())
+text_channel = discord.TextChannel(state=unittest.mock.MagicMock(), guild=unittest.mock.MagicMock(), data=channel_data)
+context = Context(message=unittest.mock.MagicMock(), prefix=unittest.mock.MagicMock())
 
 class MockBot(RedefinedMockMixin, unittest.mock.MagicMock):
+    default = bot_data
+    spec_set = bot
     def __init__(self, **kw) -> None:
         super().__init__(**collections.ChainMap(self.default,kw))
-        self.latency = 0.001
 
     async def can_run(self, ctx):
         return True
 
 
-guild = discord.Guild(data=guild_data, state=unittest.mock.MagicMock())
 class MockGuild(RedefinedMockMixin, unittest.mock.MagicMock):
     default = guild_data
+    spec_set = guild
     def __init__(self, **kw) -> None:
         super().__init__(**collections.ChainMap(self.default,kw))
         self.roles = []
@@ -142,12 +144,14 @@ class MockGuild(RedefinedMockMixin, unittest.mock.MagicMock):
 
 class MockVoiceChannel(RedefinedMockMixin, unittest.mock.MagicMock):
     default = voice_channel_data
+    spec_set = voice_channel
     def __init__(self, **kw) -> None:
         super().__init__(**collections.ChainMap(self.default,kw))
 
 
 class MockVoiceState(RedefinedMockMixin, unittest.mock.MagicMock):
     default = voice_state_data
+    spec_set = voice_state
     def __init__(self, **kw) -> None:
         super().__init__(**collections.ChainMap(self.default,kw))
         self.channel = kw.get('channel', MockVoiceChannel())
@@ -155,20 +159,20 @@ class MockVoiceState(RedefinedMockMixin, unittest.mock.MagicMock):
 
 class MockMember(RedefinedMockMixin, unittest.mock.MagicMock):
     default = member_data
+    spec_set = member
     def __init__(self, **kw) -> None:
+        self.default.pop('user', None)
         super().__init__(**collections.ChainMap(self.default,kw))
         self.voice = kw.get('voice', MockVoiceState())
 
 
-channel = discord.TextChannel(state=unittest.mock.MagicMock(), guild=MockGuild(), data=channel_data)
-
 class MockTextChannel(RedefinedMockMixin, unittest.mock.MagicMock):
     default = channel_data
+    spec_set = text_channel
     def __init__(self, **kw) -> None:
         super().__init__(**collections.ChainMap(self.default,kw))
         self.guild = kw.get('guild', MockGuild())
 
-context = Context(message=unittest.mock.MagicMock(), prefix=unittest.mock.MagicMock())
 
 class MockContext(RedefinedMockMixin, unittest.mock.MagicMock):
     def __init__(self, **kw) -> None:
