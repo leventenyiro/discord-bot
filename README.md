@@ -1,0 +1,11 @@
+# How to run the bot
+- To be able to run the bot you need to have python installed. Prefered version: 3.10.2.
+- Install pip. Execute the following command *python get-pip.py*
+- Run *install.bat* on Windows. If you are using a different operating system, execute *python install.py* on your command line in the bot's folder.
+- To fully use the bot, you need to create a *botconfig.json* file, which has to contain the following data:
+    - Basic botconfig:
+        - {'token': your_bot_token, 'prefix': your_prefix}
+    - To use our Spotify library as wellm, you need to extend this file with the following data:
+        - {'spotify_client_id': your_spotify_client_id, 'spotify_client_secret': your_spotify_client_secret}
+- To test the bot, execute the tests.bat file on Windows. If you are using a different operating system, execute *python -m unittest* in your command line.
+- To run the bot execute the run.bat file on Windows. If you are using a different operating system, execute *python index.py* in your command line.
