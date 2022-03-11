@@ -92,7 +92,7 @@ class RedefinedMockMixin:
 
     def __init__(self, **kwargs):
         name = kwargs.pop('name', None)
-        super().__init__(spec_set=self.spec_set,**kwargs)
+        super().__init__(spec_set=self.spec_set,**collections.ChainMap(self.default,kwargs))
         if self.additional_spec_asyncs:
             self._spec_asyncs.extend(self.additional_spec_asyncs)
         if name:
@@ -125,7 +125,7 @@ class MockBot(RedefinedMockMixin, unittest.mock.MagicMock):
     default = bot_data
     spec_set = bot
     def __init__(self, **kw) -> None:
-        super().__init__(**collections.ChainMap(self.default,kw))
+        super().__init__(**kw)
 
     async def can_run(self, ctx):
         return True
@@ -135,7 +135,7 @@ class MockGuild(RedefinedMockMixin, unittest.mock.MagicMock):
     default = guild_data
     spec_set = guild
     def __init__(self, **kw) -> None:
-        super().__init__(**collections.ChainMap(self.default,kw))
+        super().__init__(**kw)
         self.roles = []
         self.me.guild_permissions.send_messages = kw.get('send_messages', True)
         self.me.guild_permissions.connect = kw.get('connect', True)
@@ -146,14 +146,14 @@ class MockVoiceChannel(RedefinedMockMixin, unittest.mock.MagicMock):
     default = voice_channel_data
     spec_set = voice_channel
     def __init__(self, **kw) -> None:
-        super().__init__(**collections.ChainMap(self.default,kw))
+        super().__init__(**kw)
 
 
 class MockVoiceState(RedefinedMockMixin, unittest.mock.MagicMock):
     default = voice_state_data
     spec_set = voice_state
     def __init__(self, **kw) -> None:
-        super().__init__(**collections.ChainMap(self.default,kw))
+        super().__init__(**kw)
         self.channel = kw.get('channel', MockVoiceChannel())
 
 
@@ -162,7 +162,7 @@ class MockMember(RedefinedMockMixin, unittest.mock.MagicMock):
     spec_set = member
     def __init__(self, **kw) -> None:
         self.default.pop('user', None)
-        super().__init__(**collections.ChainMap(self.default,kw))
+        super().__init__(**kw)
         self.voice = kw.get('voice', MockVoiceState())
 
 
@@ -170,13 +170,13 @@ class MockTextChannel(RedefinedMockMixin, unittest.mock.MagicMock):
     default = channel_data
     spec_set = text_channel
     def __init__(self, **kw) -> None:
-        super().__init__(**collections.ChainMap(self.default,kw))
+        super().__init__(**kw)
         self.guild = kw.get('guild', MockGuild())
 
 
 class MockContext(RedefinedMockMixin, unittest.mock.MagicMock):
     def __init__(self, **kw) -> None:
-        super().__init__(**collections.ChainMap(self.default,kw))
+        super().__init__(**kw)
         self.bot = kw.get('bot', MockBot())
         self.guild = kw.get('guild', MockGuild())
         self.author = kw.get('author', MockMember())
