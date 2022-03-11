@@ -12,7 +12,9 @@ class Basic(BaseCog):
     async def ping(self, ctx):
         if not ctx.channel.guild.me.guild_permissions.send_messages:
             return
-        await ctx.send(f'Pong! {round(self.bot.latency*1000)} ms')
+        message = f'Pong! {round(self.bot.latency*1000)} ms'
+        await ctx.send(message)
+        return message
 
     @commands.command()
     async def play(self, ctx, arg):

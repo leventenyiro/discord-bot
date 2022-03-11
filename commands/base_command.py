@@ -1,5 +1,7 @@
 from abc import abstractmethod
 
+from utils.logger import Logger
+
 # Egy rövid magyarázat a run függvényhez:
 # A run függvény végig iterál az összes elemen, ami a required_permissionsben van.
 # Ha a requirement NEM TELJESÜL, akkor elküldi a hozzá tartozó üzenetet.
@@ -17,6 +19,7 @@ class BaseCommand:
             return
         for (requirement, message) in self.required_permissions:
             if not requirement:
+                Logger.error(f'ERROR ({self.__class__.__name__}): {message.title}')
                 return await self.ctx.send(embed = message)
         await self.logic()
         for res in self.response:

@@ -12,7 +12,7 @@ class ConnectCommand(BaseCommand):
             (ctx.author.voice is not None, InfoEmbed('You have to be in a voice channel to summon me!')),
             (ctx.channel.guild.me.guild_permissions.speak, InfoEmbed('I can not speak in there!')),
             (ctx.channel.guild.me.guild_permissions.connect, InfoEmbed('I can not join to you!')),
-            (ctx.author.voice is not None and ctx.author.voice.channel.user_limit < len(ctx.author.voice.channel.members), InfoEmbed('The room is full!'))
+            (ctx.author.voice is not None and (ctx.author.voice.channel.user_limit == 0 or ctx.author.voice.channel.user_limit > len(ctx.author.voice.channel.members)), InfoEmbed('The room is full!'))
         ]
         response = [
             InfoEmbed(f'Joined to {None if ctx.author.voice is None else ctx.author.voice.channel.name}!'),
