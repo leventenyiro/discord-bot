@@ -1,6 +1,6 @@
 import unittest
-from utils.mockups import *
-from cogs.basic import Basic
+from utility.mockups import *
+from extensions.basic import Basic
 
 class TestPing(unittest.TestCase):
     def test_ping_response(self):

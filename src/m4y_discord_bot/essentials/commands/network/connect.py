@@ -1,6 +1,6 @@
 import asyncio
 
-from commands.base_command import BaseCommand
+from essentials.commands.base_command import BaseCommand
 from utils.logger import Logger
 from utils.promptcolor import PromptColors
 from utils.embeds import InfoEmbed

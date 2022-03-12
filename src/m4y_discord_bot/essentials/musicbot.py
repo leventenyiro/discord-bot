@@ -1,5 +1,5 @@
-from commands.music.connect import ConnectCommand
-from commands.music.disconnect import DisconnectCommand
+from essentials.commands.network.connect import ConnectCommand
+from essentials.commands.network.disconnect import DisconnectCommand
 
 class MusicBot:
     def __init__(self, bot) -> None:
