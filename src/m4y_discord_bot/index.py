@@ -27,10 +27,10 @@ async def on_ready():
     Logger.info(f"Currently online on {len(list(bot.guilds))} servers!")
 
 # Loading command Cogs
-for filename in os.listdir('./cogs'):
-    if filename.endswith('.py') and not filename.startswith('base_'):
+for filename in os.listdir('./extensions'):
+    if filename.endswith('.py') and not filename.startswith('base_') and filename != '__init__.py':
         Logger.progress(f'Loading {filename}...')
-        bot.load_extension(f'cogs.{filename[:-3]}')
+        bot.load_extension(f'extensions.{filename[:-3]}')
 
 token = botinfo["token"]
 bot.run(token)

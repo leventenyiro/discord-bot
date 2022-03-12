@@ -1,8 +1,8 @@
 import unittest
 
-from utils.mockups import *
-from music.musicbot import MusicBot
-from commands.music.disconnect import DisconnectCommand
+from utility.mockups import *
+from essentials.musicbot import MusicBot
+from essentials.commands.network.disconnect import DisconnectCommand
 
 class TestDisconnectCommand(unittest.TestCase):
     def test_disconnection_successful(self):

@@ -1,8 +1,8 @@
 from operator import contains
 from discord.ext import commands
 
-from cogs.base_cog import BaseCog
-from spotify.spotify import Spotify
+from extensions.base_cog import BaseCog
+from external.spotify.spotify import Spotify
 
 class Basic(BaseCog):
     def __init__(self, bot) -> None:

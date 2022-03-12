@@ -1,8 +1,8 @@
 import unittest
 
-from utils.mockups import *
-from music.musicbot import MusicBot
-from commands.music.connect import ConnectCommand
+from utility.mockups import *
+from essentials.musicbot import MusicBot
+from essentials.commands.network.connect import ConnectCommand
 
 class TestConnectCommand(unittest.TestCase):
     def test_connection_successful(self):
