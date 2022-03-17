@@ -11,7 +11,8 @@ class TestDisconnectCommand(unittest.TestCase):
     
     def test_disconnection_successful(self):
         ctx = MockContext()
-        self.music_bot.servers[ctx.guild.id] = {'voice_channel': ctx.voice.channel, 'text_channel': ctx.channel}
+        server = {'voice_channel': ctx.voice.channel, 'text_channel': ctx.channel}
+        self.music_bot.add_server(ctx.guild.id,server) 
         disconnect_cmd = DisconnectCommand(ctx,self.music_bot)
         asyncio.run(disconnect_cmd.run(logging=False))
         guild_id = ctx.guild.id
