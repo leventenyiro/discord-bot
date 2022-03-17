@@ -14,18 +14,19 @@ class BaseCommand:
         self.response = response
         pass
     
-    async def run(self):
+    async def run(self, logging=True):
         if not self.ctx.channel.guild.me.guild_permissions.send_messages:
             return
         for (requirement, message) in self.required_permissions:
             if not requirement:
-                Logger.error(f'ERROR ({self.__class__.__name__}): {message.title}')
+                if logging:
+                    Logger.error(f'ERROR ({self.__class__.__name__}): {message.title}')
                 await self.ctx.send(embed = message)
                 return message.title
-        await self.logic()
+        await self.logic(logging=logging)
         for res in self.response:
             await self.ctx.send(embed = res)
 
     @abstractmethod
-    async def logic(self):
+    async def logic(self, logging=True):
         pass

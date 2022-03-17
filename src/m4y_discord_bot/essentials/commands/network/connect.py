@@ -21,7 +21,7 @@ class ConnectCommand(BaseCommand):
         super().__init__(ctx, required_permissions, response)
         self.music_bot = music_bot
 
-    async def logic(self):
+    async def logic(self, logging=True):
         voice_channel = self.ctx.author.voice.channel
         text_channel = self.ctx.channel
         server = {
@@ -29,7 +29,8 @@ class ConnectCommand(BaseCommand):
             'text_channel': text_channel
         }
         self.music_bot.add_server(self.ctx.channel.guild.id, server)
-        Logger.info(f'Joined to {PromptColors.CGREENBG}{voice_channel.id}{PromptColors.CEND} voice channel on {PromptColors.CGREENBG}{self.ctx.channel.guild.id}{PromptColors.CEND} guild, using {PromptColors.CGREENBG}{text_channel.id}{PromptColors.CEND} text channel!')
+        if logging:
+            Logger.info(f'Joined to {PromptColors.CGREENBG}{voice_channel.id}{PromptColors.CEND} voice channel on {PromptColors.CGREENBG}{self.ctx.channel.guild.id}{PromptColors.CEND} guild, using {PromptColors.CGREENBG}{text_channel.id}{PromptColors.CEND} text channel!')
         try:
             return await voice_channel.connect()
         except asyncio.TimeoutError:

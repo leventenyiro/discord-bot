@@ -10,7 +10,7 @@ class TestConnectCommand(unittest.TestCase):
         music_bot = MusicBot(bot)
         ctx = MockContext()
         connect_cmd = ConnectCommand(ctx,music_bot)
-        asyncio.run(connect_cmd.run())
+        asyncio.run(connect_cmd.run(logging=False))
         voice_channel_id = ctx.author.voice.channel.id
         guild_id = ctx.guild.id
         text_channel_id = ctx.channel.id
