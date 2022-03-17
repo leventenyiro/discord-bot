@@ -74,6 +74,45 @@ member_data = {
     'roles': []
 }
 
+permissions_data = {
+    'add_reactions': True,
+    'administrator': False,
+    'attach_files': True,
+    'ban_members': True,
+    'change_nickname': True,
+    'connect': True,
+    'create_instant_invite': True,
+    'deafen_members': True,
+    'embed_links': True,
+    'external_emojis': True,
+    'kick_members': True,
+    'manage_channels': True,
+    'manage_emojis': True,
+    'manage_guild': True,
+    'manage_messages': True,
+    'manage_nicknames': True,
+    'manage_permissions': True,
+    'manage_roles': True,
+    'manage_webhooks': True,
+    'mention_everyone': True,
+    'move_members': True,
+    'mute_members': True,
+    'priority_speaker': True,
+    'read_message_history': True,
+    'read_messages': True,
+    'request_to_speak': True,
+    'send_messages': True,
+    'send_tts_messages': True,
+    'speak': True,
+    'stream': True,
+    'use_external_emojis': True,
+    'use_slash_commands': True,
+    'use_voice_activation': True,
+    'view_audit_log': True,
+    'view_channel': True,
+    'view_guild_insights': True,
+}
+
 channel_data = {
     'id': 1,
     'type': 'TextChannel',
@@ -92,7 +131,7 @@ class RedefinedMockMixin:
 
     def __init__(self, **kwargs):
         name = kwargs.pop('name', None)
-        super().__init__(spec_set=self.spec_set,**collections.ChainMap(self.default,kwargs))
+        super().__init__(spec_set=self.spec_set,**collections.ChainMap(kwargs,self.default))
         if self.additional_spec_asyncs:
             self._spec_asyncs.extend(self.additional_spec_asyncs)
         if name:
@@ -137,9 +176,7 @@ class MockGuild(RedefinedMockMixin, unittest.mock.MagicMock):
     def __init__(self, **kw) -> None:
         super().__init__(**kw)
         self.roles = []
-        self.me.guild_permissions.send_messages = kw.get('send_messages', True)
-        self.me.guild_permissions.connect = kw.get('connect', True)
-        self.me.guild_permissions.speak = kw.get('speak', True)
+        self.me = kw.get('me', MockMember())
 
 
 class MockVoiceChannel(RedefinedMockMixin, unittest.mock.MagicMock):
@@ -164,6 +201,14 @@ class MockMember(RedefinedMockMixin, unittest.mock.MagicMock):
         self.default.pop('user', None)
         super().__init__(**kw)
         self.voice = kw.get('voice', MockVoiceState())
+        self.guild_permissions = kw.get('guild_permissions', MockPermissions())
+
+
+class MockPermissions(RedefinedMockMixin, unittest.mock.MagicMock):
+    default = permissions_data
+    spec_set = discord.Permissions.none()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
 
 class MockTextChannel(RedefinedMockMixin, unittest.mock.MagicMock):

@@ -26,9 +26,10 @@ class DisconnectCommand(BaseCommand):
         super().__init__(ctx, required_permissions, response)
         self.music_bot = music_bot
 
-    async def logic(self):
+    async def logic(self, logging=True):
         server = self.music_bot.get_server(self.ctx.channel.guild.id)
         voice_channel = server['voice_channel']
         await self.ctx.voice_client.disconnect()
-        Logger.info(f'Disconnected from {PromptColors.CGREENBG}{voice_channel.id}{PromptColors.CEND} voice channel on {PromptColors.CGREENBG}{self.ctx.channel.guild.id}{PromptColors.CEND} guild')
+        if logging:
+            Logger.info(f'Disconnected from {PromptColors.CGREENBG}{voice_channel.id}{PromptColors.CEND} voice channel on {PromptColors.CGREENBG}{self.ctx.channel.guild.id}{PromptColors.CEND} guild')
         self.music_bot.clear_server(self.ctx.guild.id)
