@@ -20,7 +20,8 @@ class BaseCommand:
         for (requirement, message) in self.required_permissions:
             if not requirement:
                 Logger.error(f'ERROR ({self.__class__.__name__}): {message.title}')
-                return await self.ctx.send(embed = message)
+                await self.ctx.send(embed = message)
+                return message.title
         await self.logic()
         for res in self.response:
             await self.ctx.send(embed = res)
