@@ -16,13 +16,5 @@ class Basic(BaseCog):
         await ctx.send(message)
         return message
 
-    @commands.command()
-    async def play(self, ctx, arg):
-        if (contains(arg, 'https://open.spotify.com/track/')):
-            try:
-                await ctx.send(Spotify.get_track(arg))
-            except: # hibakezelés
-                await ctx.send()
-
 def setup(client):
     client.add_cog(Basic(client))
