@@ -31,6 +31,7 @@ class PlayCommand(BaseCommand):
         super().__init__(ctx, required_permissions, response)
 
     async def logic(self, logging=True):
+        Logger.info(f'Request on {self.ctx.guild.id}.')
         server = self.music_bot.get_server(self.ctx.channel.guild.id)
         player = server['audio_player']
         if player.get_playlist_length() == 0:
@@ -46,5 +47,6 @@ class PlayCommand(BaseCommand):
         if url.startswith('https://youtu.be/'):
             vid_id = url.split('youtu.be/')[1][0:11]
         if vid_id is not None and re.match(r'^[a-zA-Z0-9_-]{11}$',vid_id):
+            Logger.info(f'A song has been created.')
             return Song(url)
         return False

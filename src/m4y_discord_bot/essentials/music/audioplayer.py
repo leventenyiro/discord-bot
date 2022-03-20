@@ -2,6 +2,8 @@ import youtube_dl
 import discord
 import asyncio
 
+from utils.logger import Logger
+
 class AudioPlayer:
     # THESE CAN BE MODIFIED LATER, AND ALSO WE CAN ADD MORE FILTERS TO CREATE OTHER COMMANDS SUCH AS NIGHTCORE
     SPEED = 1.0
@@ -36,6 +38,7 @@ class AudioPlayer:
             stream_url = current_song.get_stream(self.YDL_OPTIONS)
             stream = discord.FFmpegPCMAudio(stream_url, **self.FFMPEG_OPTIONS)
             self.voice_client.play(stream, after=self._end_stream)
+            Logger.info(f'({self.voice_client.guild.id}) Currently playing: {current_song.get_url()}.')
 
     def _end_stream(self, error):
         if error:
