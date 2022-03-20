@@ -46,7 +46,8 @@ class PlayCommand(BaseCommand):
             vid_id = url.split('v=')[1][0:11]
         if url.startswith('https://youtu.be/'):
             vid_id = url.split('youtu.be/')[1][0:11]
-        if re.match(url, r'https:\/\/[a-z]+\.spotify\.com\/(track\/)(.*)'):
+        #if re.match(url, r'https:\/\/[a-z]+\.spotify\.com\/(track\/)(.*)'):
+        if url.startswith('https://open.spotify.com/') and r'^(track\/)(.*))':
             pass
         if vid_id is not None and re.match(r'^[a-zA-Z0-9_-]{11}$',vid_id):
             Logger.info(f'A song has been created.')
