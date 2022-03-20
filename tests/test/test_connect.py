@@ -1,7 +1,7 @@
 import unittest
 
 from utility.mockups import *
-from essentials.musicbot import MusicBot
+from essentials.music.musicbot import MusicBot
 from essentials.commands.network.connect import ConnectCommand
 
 class TestConnectCommand(unittest.TestCase):
