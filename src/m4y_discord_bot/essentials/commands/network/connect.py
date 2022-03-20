@@ -37,8 +37,8 @@ class ConnectCommand(BaseCommand):
             server['audio_player'] = AudioPlayer(self.ctx.voice_client) 
         except asyncio.TimeoutError:
             Logger.error(f'ERROR: Timeout while trying to join to {PromptColors.CGREENBG}{voice_channel.id}{PromptColors.CEND} voice channel on {PromptColors.CGREENBG}{self.ctx.channel.guild.id}{PromptColors.CEND} guild')
-            return await text_channel.send(InfoEmbed(f'Connection failed!'))
+            return await text_channel.send(embed=InfoEmbed(f'Connection failed!'))
         except discord.ClientException:
             server['audio_player'] = AudioPlayer(self.ctx.voice_client)
-            await text_channel.send(InfoEmbed(f'Voice connection has been dropped! Defaulting back to an empty playlist!'))
+            await text_channel.send(embed=InfoEmbed(f'Voice connection has been dropped! Defaulting back to an empty playlist!'))
         self.music_bot.add_server(self.ctx.channel.guild.id, server)
