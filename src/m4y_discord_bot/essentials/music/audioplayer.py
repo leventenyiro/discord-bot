@@ -49,3 +49,7 @@ class AudioPlayer:
 
     def add_to_playlist(self, song):
         self.playlist.append(song)
+
+    def skip(self):
+        if self.voice_client.is_playing():
+            self.voice_client.stop()

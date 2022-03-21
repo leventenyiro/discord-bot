@@ -1,6 +1,7 @@
 from essentials.commands.music.play import PlayCommand
 from essentials.commands.network.connect import ConnectCommand
 from essentials.commands.network.disconnect import DisconnectCommand
+from essentials.commands.music.skip import SkipCommand
 from essentials.music.song import Song
 
 class MusicBot:
@@ -20,6 +21,10 @@ class MusicBot:
         if not self.get_server(ctx.guild.id):
             await self.connect(ctx)
         cmd = PlayCommand(ctx,self,url)
+        await cmd.run()
+
+    async def skip(self, ctx):
+        cmd = SkipCommand(ctx, self)
         await cmd.run()
 
     def add_server(self, id, server):
