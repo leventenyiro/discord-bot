@@ -1,5 +1,5 @@
 import re
-from src.m4y_discord_bot.external.spotify import Spotify
+from external.spotify.spotify import Spotify
 from essentials.commands.base_command import BaseCommand
 from essentials.music.song import Song
 from utils.logger import Logger

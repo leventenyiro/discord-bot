@@ -40,7 +40,7 @@ class AudioPlayer:
             self.voice_client.play(stream, after=self._end_stream)
             Logger.info(f'({self.voice_client.guild.id}) Currently playing: {current_song.get_url()}.')
 
-    def _end_stream(self, error):
+    def _end_stream(self, error=None):
         if error:
             print(error)
         self.playlist.pop(0)
@@ -49,3 +49,7 @@ class AudioPlayer:
 
     def add_to_playlist(self, song):
         self.playlist.append(song)
+
+    def skip(self):
+        if self.voice_client.is_playing():
+            self.voice_client.stop()
