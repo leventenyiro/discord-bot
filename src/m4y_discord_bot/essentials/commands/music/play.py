@@ -46,10 +46,19 @@ class PlayCommand(BaseCommand):
             vid_id = url.split('v=')[1][0:11]
         if url.startswith('https://youtu.be/'):
             vid_id = url.split('youtu.be/')[1][0:11]
-        if url.startswith('https://open.spotify.com/') and '/track/' in url:
+        if url.startswith('https://open.spotify.com/'):
             try:
-                #Spotify.get_track(url) - returns author and title
-                pass
+                if '/track/' in url:
+                    #Spotify.get_track(url) - returns author and title
+                    pass
+                elif '/playlist/' in url:
+                    #Spotify.get_playlist(url) - returns list of author and title
+                    pass
+                elif '/album/' in url:
+                    #Spotify.get_album(url) - returns list of author and title
+                    pass
+                else:
+                    pass
             except Exception as ex:
                 #print(ex) - Invalid link
                 pass
