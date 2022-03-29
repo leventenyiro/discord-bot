@@ -1,6 +1,6 @@
 from essentials.commands.base_command import BaseCommand
 from utils.logger import Logger
-from utils.embeds import InfoEmbed
+from utils.embeds import InfoEmbed, NowPlayingEmbed
 
 class NowPlayingCommand(BaseCommand):
     def __init__(self, ctx, music_bot) -> None:
@@ -20,7 +20,7 @@ class NowPlayingCommand(BaseCommand):
             (text_channel is not None and ctx.channel.id == text_channel.id, InfoEmbed(f'Commands can be accessed from {text_channel.name if text_channel is not None else None}!')) 
         ]
         response = [
-            InfoEmbed(f'{self.server["audio_player"].get_current_song().title if self.server else None}') 
+            NowPlayingEmbed(self.server['audio_player'].get_current_song()) 
         ]
         super().__init__(ctx, required_permissions, response)
 
