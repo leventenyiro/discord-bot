@@ -20,7 +20,7 @@ class NowPlayingCommand(BaseCommand):
             (text_channel is not None and ctx.channel.id == text_channel.id, InfoEmbed(f'Commands can be accessed from {text_channel.name if text_channel is not None else None}!')) 
         ]
         response = [
-            NowPlayingEmbed(self.server['audio_player'].get_current_song()) 
+            NowPlayingEmbed(self.server['audio_player'].get_current_song() if self.server else None) 
         ]
         super().__init__(ctx, required_permissions, response)
 

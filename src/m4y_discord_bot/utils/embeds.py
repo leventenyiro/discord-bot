@@ -19,18 +19,19 @@ class NowPlayingEmbed(Embed):
     BAR_LENGTH = 50
     def __init__(self, song):
         super().__init__()
+        if song is None:
+            return
         self.color = color
         self.title = 'Now playing'
         self.url = song.get_url()
         self.description = f'{song.title}'
-        self.add_field(name=self._generate_time_bar(song), value=f'{self._time_conversion(self._get_current_duration(song))}/{self._time_conversion(song.duration_seconds)}')
+        if not song.is_live:
+            self.add_field(name=self._generate_time_bar(song), value=f'{self._time_conversion(self._get_current_duration(song))}/{self._time_conversion(song.duration_seconds)}')
         self.set_footer(text=f'Requested by: {song.requested_by}', icon_url=song.requested_by_pfp)
         self.set_author(name=botname, icon_url=pfp_link)
         self.set_thumbnail(url=song.thumbnail)
 
     def _generate_time_bar(self, song):
-        if song.is_live:
-            return
         diff = self._get_current_duration(song)
         percentage = diff/song.duration_seconds
         bar = ''
@@ -42,8 +43,6 @@ class NowPlayingEmbed(Embed):
         return bar
     
     def _get_current_duration(self, song):
-        if song.is_live:
-            return
         current_timestamp = math.floor(datetime.datetime.now().timestamp())
         diff = current_timestamp-song.started_timestamp_seconds
         return diff
