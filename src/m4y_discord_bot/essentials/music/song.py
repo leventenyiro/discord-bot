@@ -1,4 +1,6 @@
 import youtube_dl
+import datetime
+import math
 
 class Song:
     YDL_OPTIONS = {
@@ -9,8 +11,10 @@ class Song:
             'preferredquality': '192',
         }]
     }
-    def __init__(self, url) -> None:
+    def __init__(self, url, ctx) -> None:
         self._url = url
+        self.requested_by = ctx.author.nick if ctx.author.nick is not None else ctx.author.name
+        self.requested_by_pfp = f'https://cdn.discordapp.com/avatars/{ctx.author.id}/{ctx.author.avatar}'
         self.set_song_attributes(self.YDL_OPTIONS)
 
     def get_url(self):
@@ -23,6 +27,9 @@ class Song:
             self.stream_url = format.get('url', None)
             self.title = info.get('title', None)
             self.duration_seconds = info.get('duration', 0)
+            self.thumbnail = info.get('thumbnail', None)
+            self.is_live = info.get('is_live', None)
+            self.started_timestamp_seconds = math.floor(datetime.datetime.now().timestamp())
 
     def get_stream_url(self):
             return self.stream_url
