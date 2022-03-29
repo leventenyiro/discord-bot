@@ -460,4 +460,26 @@ class TestMockContext(unittest.TestCase):
         self.assertTrue(context.author)
         self.assertTrue(context.channel)
         self.assertTrue(context.voice)
-    
+
+class TestMockVoiceClient(unittest.TestCase):
+    def test_mock_voice_client(self):
+        voice_client = MockVoiceClient()
+        self.assertEqual(voice_client.average_latency, 1)
+        self.assertEqual(voice_client.latency, 1)
+        self.assertTrue(voice_client.loop)
+        self.assertTrue(voice_client.source)
+        self.assertEqual(voice_client.token, 'asdasd')
+        self.assertTrue(voice_client.user)
+
+    def test_modified_voice_client(self):
+        voice_client = MockVoiceClient(latency=69)
+        self.assertEqual(voice_client.average_latency, 1)
+        self.assertEqual(voice_client.latency, 69)
+        self.assertTrue(voice_client.loop)
+        self.assertTrue(voice_client.source)
+        self.assertEqual(voice_client.token, 'asdasd')
+        self.assertTrue(voice_client.user)
+
+    def test_raises_voice_client(self):
+        with self.assertRaises(AttributeError) as error:
+            voice_client = MockVoiceClient(asd=123)

@@ -41,6 +41,15 @@ guild_data = {
     'owner_id': 1,
 }
 
+voice_client_data = {
+    'average_latency': 1,
+    'latency': 1,
+    'loop': _mocked_loop(asyncio.AbstractEventLoop),
+    'source': unittest.mock.MagicMock(),
+    'token': 'asdasd',
+    'user': unittest.mock.MagicMock()
+}
+
 voice_channel_data = {
     'bitrate': 192,
     'created_at': datetime.now(),
@@ -154,6 +163,7 @@ class RedefinedMockMixin:
 
 bot = commands.Bot(unittest.mock.MagicMock(), data=bot_data)
 guild = discord.Guild(data=guild_data, state=unittest.mock.MagicMock())
+voice_client = discord.VoiceClient(unittest.mock.MagicMock(), unittest.mock.MagicMock())
 voice_channel = discord.VoiceChannel(state=unittest.mock.MagicMock(), guild=unittest.mock.MagicMock(), data=voice_channel_data)
 voice_state = discord.VoiceState(data=voice_state_data, channel=unittest.mock.MagicMock())
 member = discord.Member(data=member_data, guild=unittest.mock.MagicMock(), state=unittest.mock.MagicMock())
@@ -219,6 +229,15 @@ class MockTextChannel(RedefinedMockMixin, unittest.mock.MagicMock):
         self.guild = kw.get('guild', MockGuild())
 
 
+class MockVoiceClient(RedefinedMockMixin, unittest.mock.MagicMock):
+    default = voice_client_data
+    spec_set = voice_client
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.channel = kw.get('channel', MockVoiceChannel())
+        self.guild = kw.get('guild', MockGuild())
+
+
 class MockContext(RedefinedMockMixin, unittest.mock.MagicMock):
     def __init__(self, **kw) -> None:
         super().__init__(**kw)
@@ -227,3 +246,4 @@ class MockContext(RedefinedMockMixin, unittest.mock.MagicMock):
         self.author = kw.get('author', MockMember())
         self.channel = kw.get('channel', MockTextChannel())
         self.voice = kw.get('voice', MockVoiceState())
+        self.voice_client = kw.get('voice_client', MockVoiceClient())
