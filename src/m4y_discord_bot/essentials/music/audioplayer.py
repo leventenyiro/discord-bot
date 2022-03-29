@@ -23,7 +23,10 @@ class AudioPlayer:
         return len(self.playlist)
 
     def get_current_song(self):
-        return self.playlist[0]
+        try:
+            return self.playlist[0]
+        except IndexError:
+            return None
 
     async def play(self):
         current_song = self.get_current_song()
