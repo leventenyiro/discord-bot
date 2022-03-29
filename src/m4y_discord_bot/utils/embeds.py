@@ -19,6 +19,8 @@ class NowPlayingEmbed(Embed):
     BAR_LENGTH = 50
     def __init__(self, song):
         super().__init__()
+        if song is None:
+            return
         self.color = color
         self.title = 'Now playing'
         self.url = song.get_url()
