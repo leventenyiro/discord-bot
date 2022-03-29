@@ -14,14 +14,6 @@ class AudioPlayer:
         'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 60', 
         'options': f'-filter_complex atempo={SPEED} -vn -ar {SAMPLE_RATE}'
     }
-    YDL_OPTIONS = {
-        'format': 'bestaudio/best',
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }]
-    }
     def __init__(self, voice_client) -> None:
         self.playlist = []
         self.voice_client = voice_client
@@ -34,12 +26,11 @@ class AudioPlayer:
         return self.playlist[0]
 
     async def play(self):
-        with youtube_dl.YoutubeDL(self.YDL_OPTIONS) as ydl:
-            current_song = self.get_current_song()
-            stream_url = current_song.get_stream(self.YDL_OPTIONS)
-            stream = discord.FFmpegPCMAudio(stream_url, **self.FFMPEG_OPTIONS)
-            self.voice_client.play(stream, after=self._end_stream)
-            Logger.info(f'({self.voice_client.guild.id}) Currently playing: {current_song.get_url()}.')
+        current_song = self.get_current_song()
+        stream_url = current_song.get_stream_url()
+        stream = discord.FFmpegPCMAudio(stream_url, **self.FFMPEG_OPTIONS)
+        self.voice_client.play(stream, after=self._end_stream)
+        Logger.info(f'({self.voice_client.guild.id}) Currently playing: {current_song.get_url()}.')
 
     def _end_stream(self, error=None):
         if error:
