@@ -28,6 +28,10 @@ class Music(BaseCog):
     async def skip(self, ctx):
         await self._music_bot.skip(ctx)
 
+    @commands.command()
+    async def loop(self, ctx):
+        await self._music_bot.loop(ctx)
+
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         if member.id != member.guild.me.id:

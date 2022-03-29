@@ -1,3 +1,4 @@
+from essentials.commands.music.loop import LoopCommand
 from essentials.commands.music.play import PlayCommand
 from essentials.commands.network.connect import ConnectCommand
 from essentials.commands.network.disconnect import DisconnectCommand
@@ -25,6 +26,10 @@ class MusicBot:
 
     async def skip(self, ctx):
         cmd = SkipCommand(ctx, self)
+        await cmd.run()
+
+    async def loop(self, ctx):
+        cmd = LoopCommand(ctx, self)
         await cmd.run()
 
     def add_server(self, id, server):
