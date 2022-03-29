@@ -9,6 +9,7 @@ from utils.embeds import InfoEmbed
 class PlayCommand(BaseCommand):
     def __init__(self, ctx, music_bot, url) -> None:
         self.music_bot = music_bot
+        self.ctx = ctx
         self.song = self.create_song(url)
         server = music_bot.get_server(ctx.channel.guild.id)
         try:
@@ -64,5 +65,5 @@ class PlayCommand(BaseCommand):
                 pass
         if vid_id is not None and re.match(r'^[a-zA-Z0-9_-]{11}$',vid_id):
             Logger.info(f'A song has been created.')
-            return Song(url)
+            return Song(url, self.ctx)
         return False
