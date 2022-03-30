@@ -61,3 +61,14 @@ class NowPlayingEmbed(Embed):
         else:
             second_string = f'{seconds}'
         return f'{minute_string}:{second_string}'
+
+class PlayEmbed(Embed):
+    def __init__(self, song):
+        super().__init__()
+        self.color = color
+        self.title = 'Added song'
+        self.url = song.get_url()
+        self.description = f'{song.title}'
+        self.set_footer(text=f'Requested by: {song.requested_by}', icon_url=song.requested_by_pfp)
+        self.set_author(name=botname, icon_url=pfp_link)
+        self.set_thumbnail(url=song.thumbnail)
