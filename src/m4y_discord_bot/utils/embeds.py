@@ -72,3 +72,4 @@ class PlayEmbed(Embed):
         self.set_footer(text=f'Requested by: {song.requested_by}', icon_url=song.requested_by_pfp)
         self.set_author(name=botname, icon_url=pfp_link)
         self.set_thumbnail(url=song.thumbnail)
+
