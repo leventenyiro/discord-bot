@@ -7,10 +7,11 @@ from utils.promptcolor import PromptColors
 from utils.embeds import InfoEmbed
 
 class PlayCommand(BaseCommand):
-    def __init__(self, ctx, music_bot, url) -> None:
+    def __init__(self, ctx, music_bot, url, **kw) -> None:
         self.music_bot = music_bot
         self.ctx = ctx
-        self.song = self.create_song(url)
+        #self.song = self.create_song(url)
+        self.song = kw.get('song', self.create_song(url))
         server = music_bot.get_server(ctx.channel.guild.id)
         try:
             text_channel = server['text_channel']
@@ -42,6 +43,8 @@ class PlayCommand(BaseCommand):
             player.add_to_playlist(self.song)
     
     def create_song(self, url):
+        if url is None:
+            return
         vid_id = None
         if url.startswith('https://www.youtube.com/watch?v='):
             vid_id = url.split('v=')[1][0:11]
