@@ -6,6 +6,8 @@ stages:
 
 before_script:
   - pip install -r ./install/requirements.txt
+  - sudo apt update
+  - sudo apt install ffmpeg
 
 build:
   stage: build
