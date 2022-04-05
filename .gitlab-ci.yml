@@ -10,7 +10,7 @@ before_script:
 build:
   stage: build
   script:
-    - pip install ./src/m4y_discord_bot/
+    - pip install ./src/
 
 test:
   stage: test
