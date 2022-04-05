@@ -1,0 +1,19 @@
+image: python:latest
+
+stages:
+  - build
+  - test
+
+before_script:
+  - pip install -r ./install/requirements.txt
+
+build:
+  stage: build
+  script:
+    - pip install ./src/m4y_discord_bot/
+
+test:
+  stage: test
+  script:
+    - cd ./tests
+    - python -m unittest
