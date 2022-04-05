@@ -43,7 +43,7 @@ class TestNowPlaying(unittest.TestCase):
         result = asyncio.run(command.run(logging=False))
         self.assertEqual(result, self.error_messages['no_server'])
 
-    def test_now_playing_no_server(self):
+    def test_now_playing_no_song(self):
         ctx = MockContext()
         voice_channel = ctx.author.voice.channel
         text_channel = ctx.channel
