@@ -33,12 +33,13 @@ class PlayCommand(BaseCommand):
         super().__init__(ctx, required_permissions, response)
 
     async def logic(self, logging=True):
-        Logger.info(f'Request on {self.ctx.guild.id}.')
+        if logging:
+            Logger.info(f'Request on {self.ctx.guild.id}.')
         server = self.music_bot.get_server(self.ctx.channel.guild.id)
         player = server['audio_player']
         if player.get_playlist_length() == 0:
             player.add_to_playlist(self.song)
-            await player.play()
+            await player.play(logging=logging)
         else:
             player.add_to_playlist(self.song)
     

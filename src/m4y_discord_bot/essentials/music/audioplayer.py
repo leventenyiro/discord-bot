@@ -28,12 +28,13 @@ class AudioPlayer:
         except IndexError:
             return None
 
-    async def play(self):
+    async def play(self, logging=True):
         current_song = self.get_current_song()
         stream_url = current_song.get_stream_url()
         stream = discord.FFmpegPCMAudio(stream_url, **self.FFMPEG_OPTIONS)
         self.voice_client.play(stream, after=self._end_stream)
-        Logger.info(f'({self.voice_client.guild.id}) Currently playing: {current_song.get_url()}.')
+        if logging:
+            Logger.info(f'({self.voice_client.guild.id}) Currently playing: {current_song.get_url()}.')
 
     def _end_stream(self, error=None):
         if error:
