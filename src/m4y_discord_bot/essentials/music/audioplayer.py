@@ -58,3 +58,12 @@ class AudioPlayer:
 
     def is_looped(self):
         return self._loop
+
+    def pause(self):
+        if self.is_paused():
+            self.voice_client.resume()
+            return
+        self.voice_client.pause()
+
+    def is_paused(self):
+        return self.voice_client.is_paused()

@@ -1,5 +1,6 @@
 from essentials.commands.music.loop import LoopCommand
 from essentials.commands.music.now_playing import NowPlayingCommand
+from essentials.commands.music.pause import PauseCommand
 from essentials.commands.music.play import PlayCommand
 from essentials.commands.network.connect import ConnectCommand
 from essentials.commands.network.disconnect import DisconnectCommand
@@ -35,6 +36,10 @@ class MusicBot:
 
     async def now_playing(self, ctx):
         cmd = NowPlayingCommand(ctx, self)
+        await cmd.run()
+
+    async def pause(self, ctx):
+        cmd = PauseCommand(ctx, self)
         await cmd.run()
 
     def add_server(self, id, server):
