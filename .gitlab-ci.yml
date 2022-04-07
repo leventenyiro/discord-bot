@@ -7,7 +7,6 @@ stages:
 before_script:
   - pip install -r ./install/requirements.txt
   - apt-get update
-  - apt-get install -y ffmpeg
 
 build:
   stage: build
@@ -17,5 +16,6 @@ build:
 test:
   stage: test
   script:
+    - apt-get install -y ffmpeg
     - cd ./tests
     - python -m unittest
