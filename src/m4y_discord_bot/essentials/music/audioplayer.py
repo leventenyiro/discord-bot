@@ -46,6 +46,9 @@ class AudioPlayer:
     def add_to_playlist(self, song):
         self.playlist.append(song)
 
+    def remove_from_playlist(self, index):
+        del self.playlist[index - 1]
+
     def skip(self):
         if self._loop:
             self._loop = False
