@@ -1,9 +1,8 @@
 import unittest
-
-from utility.mockups import *
-from essentials.music.musicbot import MusicBot
 from essentials.commands.music.remove import RemoveCommand
 from essentials.music.audioplayer import AudioPlayer
+from essentials.music.musicbot import MusicBot
+from utility.mockups import *
 
 class TestRemove(unittest.TestCase):
     error_messages = {
