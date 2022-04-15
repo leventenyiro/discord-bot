@@ -1,6 +1,6 @@
 from essentials.commands.base_command import BaseCommand
 from logging import Logger
-from m4y_discord_bot.utils.embeds import InfoEmbed
+from utils.embeds import InfoEmbed
 
 class RemoveCommand(BaseCommand):
     def __init__(self, ctx, music_bot, index) -> None:
