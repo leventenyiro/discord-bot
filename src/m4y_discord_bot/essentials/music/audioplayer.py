@@ -10,6 +10,7 @@ class AudioPlayer:
 
     DEFAULT_SAMPLE_RATE = 48000
     NIGHTCORE_SAMPLE_RATE = 36000
+    DAYCORE_SAMPLE_RATE = 64000
     # KNOWN BUGS:
     # - WHEN JOINING THE CHANNEL AFTER INITIALIZATION OF THE AUDIOPLAYER, YOU CANT HEAR THE BOT
     def __init__(self, voice_client) -> None:
@@ -17,6 +18,7 @@ class AudioPlayer:
         self.voice_client = voice_client
         self._loop = False
         self._nightcore = False
+        self._daycore = False
 
     def get_playlist_length(self):
         return len(self.playlist)
@@ -78,11 +80,23 @@ class AudioPlayer:
         return self.voice_client.is_paused()
     
     def toggle_nightcore(self):
+        self._daycore = False
         self._nightcore = not self._nightcore
         if self._nightcore:
             self.SAMPLE_RATE = self.NIGHTCORE_SAMPLE_RATE
         if not self._nightcore:
             self.SAMPLE_RATE = self.DEFAULT_SAMPLE_RATE
+
+    def toggle_daycore(self):
+        self._nightcore = False
+        self._daycore = not self._daycore
+        if self._daycore:
+            self.SAMPLE_RATE = self.DAYCORE_SAMPLE_RATE
+        if not self._daycore:
+            self.SAMPLE_RATE = self.DEFAULT_SAMPLE_RATE
+
+    def is_daycore_mode(self):
+        return self._daycore
 
     def is_nightcore_mode(self):
         return self._nightcore

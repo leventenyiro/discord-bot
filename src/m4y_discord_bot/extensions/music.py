@@ -47,6 +47,10 @@ class Music(BaseCog):
     @commands.command()
     async def nightcore(self, ctx):
         await self._music_bot.nightcore(ctx)
+    
+    @commands.command()
+    async def daycore(self, ctx):
+        await self._music_bot.daycore(ctx)
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
