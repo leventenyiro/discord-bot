@@ -6,6 +6,7 @@ from essentials.commands.network.connect import ConnectCommand
 from essentials.commands.network.disconnect import DisconnectCommand
 from essentials.commands.music.skip import SkipCommand
 from essentials.commands.music.remove import RemoveCommand
+from essentials.commands.music.nightcore import NightcoreCommand
 from essentials.music.song import Song
 
 class MusicBot:
@@ -45,6 +46,10 @@ class MusicBot:
 
     async def remove(self, ctx, index):
         cmd = RemoveCommand(ctx, self, index)
+        await cmd.run()
+
+    async def nightcore(self, ctx):
+        cmd = NightcoreCommand(ctx, self)
         await cmd.run()
 
     def add_server(self, id, server):

@@ -7,6 +7,9 @@ class AudioPlayer:
     # THESE CAN BE MODIFIED LATER, AND ALSO WE CAN ADD MORE FILTERS TO CREATE OTHER COMMANDS SUCH AS NIGHTCORE
     SPEED = 1.0
     SAMPLE_RATE = 48000
+
+    DEFAULT_SAMPLE_RATE = 48000
+    NIGHTCORE_SAMPLE_RATE = 36000
     # KNOWN BUGS:
     # - WHEN JOINING THE CHANNEL AFTER INITIALIZATION OF THE AUDIOPLAYER, YOU CANT HEAR THE BOT
     FFMPEG_OPTIONS = {
@@ -17,6 +20,7 @@ class AudioPlayer:
         self.playlist = []
         self.voice_client = voice_client
         self._loop = False
+        self._nightcore = False
 
     def get_playlist_length(self):
         return len(self.playlist)
@@ -69,3 +73,13 @@ class AudioPlayer:
 
     def is_paused(self):
         return self.voice_client.is_paused()
+    
+    def toggle_nightcore(self):
+        self._nightcore = not self._nightcore
+        if self._nightcore:
+            self.SAMPLE_RATE = self.NIGHTCORE_SAMPLE_RATE
+        if not self._nightcore:
+            self.SAMPLE_RATE = self.DEFAULT_SAMPLE_RATE
+
+    def is_nightcore_mode(self):
+        return self._nightcore
