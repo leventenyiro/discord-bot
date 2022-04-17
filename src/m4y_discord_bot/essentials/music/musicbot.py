@@ -8,6 +8,7 @@ from essentials.commands.music.skip import SkipCommand
 from essentials.commands.music.remove import RemoveCommand
 from essentials.commands.music.nightcore import NightcoreCommand
 from essentials.commands.music.daycore import DaycoreCommand
+from essentials.commands.music.setspeed import SetSpeedCommand
 from essentials.music.song import Song
 
 class MusicBot:
@@ -55,6 +56,10 @@ class MusicBot:
 
     async def daycore(self, ctx):
         cmd = DaycoreCommand(ctx, self)
+        await cmd.run()
+
+    async def setspeed(self, ctx, speed):
+        cmd = SetSpeedCommand(ctx, self, speed)
         await cmd.run()
 
     def add_server(self, id, server):
