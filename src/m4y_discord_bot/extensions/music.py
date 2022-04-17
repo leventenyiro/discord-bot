@@ -44,6 +44,10 @@ class Music(BaseCog):
     async def remove(self, ctx, index):
         await self._music_bot.remove(ctx, index)
 
+    @commands.command()
+    async def setspeed(self, ctx, speed):
+        await self._music_bot.setspeed(ctx, speed)
+
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         if member.id != member.guild.me.id:

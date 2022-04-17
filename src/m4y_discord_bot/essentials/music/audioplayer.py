@@ -69,3 +69,10 @@ class AudioPlayer:
 
     def is_paused(self):
         return self.voice_client.is_paused()
+
+    def set_speed(self, speed):
+        self.SPEED = speed
+        self.FFMPEG_OPTIONS = {
+            'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 60', 
+            'options': f'-filter_complex atempo={self.SPEED} -vn -ar {self.SAMPLE_RATE}'
+        }
