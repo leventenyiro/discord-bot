@@ -100,3 +100,6 @@ class AudioPlayer:
 
     def is_nightcore_mode(self):
         return self._nightcore
+
+    def set_speed(self, speed):
+        self.SPEED = speed
