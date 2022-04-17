@@ -48,6 +48,10 @@ class Music(BaseCog):
     async def setspeed(self, ctx, speed):
         await self._music_bot.setspeed(ctx, speed)
 
+    @commands.command()
+    async def resetspeed(self, ctx):
+        await self._music_bot.resetspeed(ctx)
+
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         if member.id != member.guild.me.id:
