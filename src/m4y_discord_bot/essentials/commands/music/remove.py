@@ -1,5 +1,5 @@
 from essentials.commands.base_command import BaseCommand
-from logging import Logger
+from utils.logger import Logger
 from utils.embeds import InfoEmbed
 
 class RemoveCommand(BaseCommand):
