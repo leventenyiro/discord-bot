@@ -1,6 +1,7 @@
 image: python:3.8.5
 
 stages:
+  - safety
   - lint
   - build
   - test
@@ -8,6 +9,12 @@ stages:
 before_script:
   - pip install -r ./install/requirements.txt
   - apt-get update
+
+Safety:
+  stage: safety
+  script:
+    - pip install safety
+    - safety check --full-report -r install/requirements.txt
 
 PyLint:
   stage: lint
