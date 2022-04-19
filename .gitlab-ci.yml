@@ -20,12 +20,13 @@ PyLint:
   stage: lint
   script:
     - pip install pylint
-    - echo CI_COMMIT_SHA=${CI_COMMIT_SHA}
-    - git fetch origin main
-    - FILES=$(git diff --name-only ${CI_COMMIT_SHA} origin/main | grep '\.py'$)
-    - echo "Changed files are $FILES"
-    - mkdir ./pylint
-    - pylint --errors-only --disable='E0401' --disable='F0001' --output-format=text $FILES | tee ./pylint/pylint.log || pylint-exit $? 
+    - error_count=$(pylint --errors-only --disable='E0401' --disable='F0001' src/ | wc -l)
+    - if [ $error_count -ge 1 ];then
+    - exit 1
+    - fi
+    - if [ $error_count -eq 0 ];then
+    - exit 0
+    - fi
 
 build:
   stage: build
