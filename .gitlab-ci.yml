@@ -1,12 +1,24 @@
 image: python:3.8.5
 
 stages:
+  - lint
   - build
   - test
 
 before_script:
   - pip install -r ./install/requirements.txt
   - apt-get update
+
+PyLint:
+  stage: lint
+  script:
+    - pip install pylint
+    - echo CI_COMMIT_SHA=${CI_COMMIT_SHA}
+    - git fetch origin main
+    - FILES=$(git diff --name-only ${CI_COMMIT_SHA} origin/main | grep '\.py'$)
+    - echo "Changed files are $FILES"
+    - mkdir ./pylint
+    - pylint --errors-only --disable='E0401' --disable='F0001' --output-format=text $FILES | tee ./pylint/pylint.log || pylint-exit $? 
 
 build:
   stage: build
