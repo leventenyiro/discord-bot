@@ -4,7 +4,7 @@ from essentials.commands.base_command import BaseCommand
 from essentials.music.song import Song
 from utils.logger import Logger
 from utils.promptcolor import PromptColors
-from utils.embeds import InfoEmbed
+from utils.embeds import PlayEmbed, InfoEmbed
 
 class PlayCommand(BaseCommand):
     def __init__(self, ctx, music_bot, url, **kw) -> None:
@@ -28,7 +28,7 @@ class PlayCommand(BaseCommand):
             (ctx.author.voice is not None and voice_channel is not None and ctx.author.voice.channel.id == voice_channel.id, InfoEmbed('We are not in the same room!'))
         ]
         response = [
-            InfoEmbed('A new song has been added to the playlist!')
+            PlayEmbed(self.song) if self.song else None
         ]
         super().__init__(ctx, required_permissions, response)
 
