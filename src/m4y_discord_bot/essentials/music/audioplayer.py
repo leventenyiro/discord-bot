@@ -39,7 +39,7 @@ class AudioPlayer:
         except IndexError:
             return None
 
-    async def play(self, logging=True):
+    def play(self, logging=True):
         current_song = self.get_current_song()
         stream_url = current_song.get_stream_url()
         stream = discord.FFmpegPCMAudio(stream_url, **self.GET_FFMPEG_OPTIONS())
@@ -57,6 +57,8 @@ class AudioPlayer:
     def _end_stream(self, error=None):
         if error:
             print(error)
+        if not self.voice_client.is_connected():
+            return
         if not self._loop:
             previous_song = self.playlist.pop(0)
             if previous_song is not None:
@@ -64,15 +66,15 @@ class AudioPlayer:
             if self.get_previous_songs_length() > self.MAX_PREVIOUS_SONG_COUNT:
                 self.previous_songs.pop(0)
         if self.get_playlist_length() > 0:
-            asyncio.run(self.play())
+            self.play()
     
-    async def previous(self):
+    def previous(self):
         previous_song = self.previous_songs.pop()
         self.playlist.insert(0,previous_song)
         if self.voice_client.is_playing():
             self.playlist.insert(0,None)
             return self.skip()
-        return asyncio.run(self.play())
+        self.play()
 
     def add_to_playlist(self, song):
         self.playlist.append(song)
