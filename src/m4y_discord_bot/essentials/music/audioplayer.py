@@ -7,7 +7,7 @@ class AudioPlayer:
     # THESE CAN BE MODIFIED LATER, AND ALSO WE CAN ADD MORE FILTERS TO CREATE OTHER COMMANDS SUCH AS NIGHTCORE
     SPEED = 1.0
     SAMPLE_RATE = 48000
-
+    MAX_PREVIOUS_SONG_COUNT = 50
     DEFAULT_SAMPLE_RATE = 48000
     NIGHTCORE_SAMPLE_RATE = 36000
     DAYCORE_SAMPLE_RATE = 64000
@@ -15,6 +15,7 @@ class AudioPlayer:
     # - WHEN JOINING THE CHANNEL AFTER INITIALIZATION OF THE AUDIOPLAYER, YOU CANT HEAR THE BOT
     def __init__(self, voice_client) -> None:
         self.playlist = []
+        self.previous_songs = []
         self.voice_client = voice_client
         self._loop = False
         self._nightcore = False
@@ -23,6 +24,15 @@ class AudioPlayer:
     def get_playlist_length(self):
         return len(self.playlist)
 
+    def get_previous_songs_length(self):
+        return len(self.previous_songs)
+
+    def get_previous_song(self):
+        try:
+            return self.previous_songs[-1]
+        except IndexError:
+            return None
+    
     def get_current_song(self):
         try:
             return self.playlist[0]
@@ -48,9 +58,21 @@ class AudioPlayer:
         if error:
             print(error)
         if not self._loop:
-            self.playlist.pop(0)
+            previous_song = self.playlist.pop(0)
+            if previous_song is not None:
+                self.previous_songs.append(previous_song)
+            if self.get_previous_songs_length() > self.MAX_PREVIOUS_SONG_COUNT:
+                self.previous_songs.pop(0)
         if self.get_playlist_length() > 0:
             asyncio.run(self.play())
+    
+    async def previous(self):
+        previous_song = self.previous_songs.pop()
+        self.playlist.insert(0,previous_song)
+        if self.voice_client.is_playing():
+            self.playlist.insert(0,None)
+            return self.skip()
+        return asyncio.run(self.play())
 
     def add_to_playlist(self, song):
         self.playlist.append(song)
