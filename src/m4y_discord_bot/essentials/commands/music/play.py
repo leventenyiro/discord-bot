@@ -24,11 +24,12 @@ class PlayCommand(BaseCommand):
         required_permissions = [
             (ctx.author.voice is not None, InfoEmbed('You have to be in a voice channel to play a song!')),
             (self.song, InfoEmbed('The requested song is not in the correct format!')),
+            (self.song and not self.song.failed, InfoEmbed('The song was not found!')),
             (text_channel is not None and ctx.channel.id == text_channel.id, InfoEmbed(f'Commands can be accessed from {text_channel.name if text_channel is not None else None}!')),
             (ctx.author.voice is not None and voice_channel is not None and ctx.author.voice.channel.id == voice_channel.id, InfoEmbed('We are not in the same room!'))
         ]
         response = [
-            PlayEmbed(self.song) if self.song else None
+            PlayEmbed(self.song) if self.song and not self.song.failed else None
         ]
         super().__init__(ctx, required_permissions, response)
 
@@ -67,7 +68,7 @@ class PlayCommand(BaseCommand):
             except Exception as ex:
                 #print(ex) - Invalid link
                 pass
-        if vid_id is not None and re.match(r'^[a-zA-Z0-9_-]{11}$',vid_id):
+        if vid_id is not None and re.match(r'^[a-zA-Z0-9_-]{11}$',vid_id) or re.match(r'^https:\/\/soundcloud\.com\/\S+$', url):
             Logger.info(f'A song has been created.')
             return Song(url, self.ctx)
         return False
