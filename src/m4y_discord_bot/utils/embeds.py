@@ -1,35 +1,48 @@
 import math
 import datetime
+import re
 
 from discord import Embed
 from discord import Colour
 
-botname = "Music4You"
-pfp_link = "https://cdn.discordapp.com/avatars/940645443359092806/12cbd729c419913c0bf3373173ac7c01.png"
-color = Colour.from_rgb(34,139,34)
+BOTNAME = "Music4You"
+PFP_LINK = "https://cdn.discordapp.com/avatars/940645443359092806/12cbd729c419913c0bf3373173ac7c01.png"
+COLOR = Colour.from_rgb(34,139,34)
+SOUNDCLOUD_EMOTE = '<:soundcloud:966757896417329173>'
+YOUTUBE_EMOTE = '<:youtube:966757552765403196>'
 
-class InfoEmbed(Embed):
-    def __init__(self, message):
-        super().__init__()
-        self.color = color
-        self.title = message
-        self.set_author(name=botname, icon_url=pfp_link)
+class BaseEmbed(Embed):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.color = COLOR
+        self.set_author(name=BOTNAME, icon_url=PFP_LINK)
 
-class NowPlayingEmbed(Embed):
-    BAR_LENGTH = 50
-    def __init__(self, song):
-        super().__init__()
+class MusicEmbed(BaseEmbed):
+    def __init__(self, song, title,**kwargs):
+        super().__init__(**kwargs)
         if song is None:
             return
-        self.color = color
-        self.title = 'Now playing'
         self.url = song.get_url()
+        if self.url.startswith('https://youtu.be/') or self.url.startswith('https://www.youtube.com/watch?v='):
+            self.icon = YOUTUBE_EMOTE
+        if re.match(r'^https:\/\/soundcloud\.com\/\S+$', self.url):
+            self.icon = SOUNDCLOUD_EMOTE
+        self.title = f'{self.icon} {title}'
         self.description = f'{song.title}'
-        if not song.is_live:
-            self.add_field(name=self._generate_time_bar(song), value=f'{self._time_conversion(self._get_current_duration(song))}/{self._time_conversion(song.duration_seconds)}')
         self.set_footer(text=f'Requested by: {song.requested_by}', icon_url=song.requested_by_pfp)
-        self.set_author(name=botname, icon_url=pfp_link)
         self.set_thumbnail(url=song.thumbnail)
+
+class InfoEmbed(BaseEmbed):
+    def __init__(self, message):
+        super().__init__()
+        self.title = message
+
+class NowPlayingEmbed(MusicEmbed):
+    BAR_LENGTH = 50
+    def __init__(self, song):
+        super().__init__(song, 'Now Playing')
+        if song is not None and not song.is_live:
+            self.add_field(name=self._generate_time_bar(song), value=f'{self._time_conversion(self._get_current_duration(song))}/{self._time_conversion(song.duration_seconds)}')
 
     def _generate_time_bar(self, song):
         diff = self._get_current_duration(song)
@@ -62,14 +75,6 @@ class NowPlayingEmbed(Embed):
             second_string = f'{seconds}'
         return f'{minute_string}:{second_string}'
 
-class PlayEmbed(Embed):
+class PlayEmbed(MusicEmbed):
     def __init__(self, song):
-        super().__init__()
-        self.color = color
-        self.title = 'Added song'
-        self.url = song.get_url()
-        self.description = f'{song.title}'
-        self.set_footer(text=f'Requested by: {song.requested_by}', icon_url=song.requested_by_pfp)
-        self.set_author(name=botname, icon_url=pfp_link)
-        self.set_thumbnail(url=song.thumbnail)
-
+        super().__init__(song, 'Added Song')
