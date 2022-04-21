@@ -16,10 +16,7 @@ class TestNowPlaying(unittest.TestCase):
     def setUp(self):
         self.bot = MockBot()
         self.music_bot = MusicBot(bot)
-        self.song = unittest.mock.MagicMock()
-        self.song.duration_seconds = 100
-        self.song.started_timestamp_seconds = math.floor(datetime.now().timestamp())
-        self.song.is_live = None
+        self.song = MockSong()
 
     def test_now_playing_basic(self):
         ctx = MockContext()
@@ -58,7 +55,7 @@ class TestNowPlaying(unittest.TestCase):
         response = asyncio.run(command.run(logging=False))
         self.assertEqual(response, self.error_messages['no_song'])
 
-    def test_loop_not_the_same_text_channel(self):
+    def test_now_playing_not_the_same_text_channel(self):
         voice_channel = MockVoiceChannel(id=69, name='asd')
         text_channel = MockTextChannel(id=420)
         audio_player = AudioPlayer(MockVoiceClient())

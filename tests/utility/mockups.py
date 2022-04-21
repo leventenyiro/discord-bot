@@ -132,6 +132,20 @@ channel_data = {
     'last_message_id': 1,
 }
 
+song_data = {
+    'url': 'https://youtu.be/',
+    'requested_by': 'asda',
+    'requested_by_pfp': 'dfkjadfgjkl',
+    'failed': False,
+    'format': 'format',
+    'title': 'title',
+    'stream_url': 'streamurl',
+    'duration_seconds': 420,
+    'thumbnail': 'asdfasdf',
+    'is_live': None,
+    'started_timestamp_seconds': 69
+}
+
 class RedefinedMockMixin:
     child_mock_type = unittest.mock.MagicMock
     additional_spec_asyncs = None
@@ -247,3 +261,13 @@ class MockContext(RedefinedMockMixin, unittest.mock.MagicMock):
         self.channel = kw.get('channel', MockTextChannel())
         self.voice = kw.get('voice', MockVoiceState())
         self.voice_client = kw.get('voice_client', MockVoiceClient())
+
+
+class MockSong(RedefinedMockMixin, unittest.mock.MagicMock):
+    default = song_data
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        ctx = kwargs.get('context', MockContext())
+
+    def get_url(self):
+        return self.url
