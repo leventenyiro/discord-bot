@@ -39,7 +39,7 @@ class PlayCommand(BaseCommand):
         player = server['audio_player']
         if player.get_playlist_length() == 0:
             player.add_to_playlist(self.song)
-            await player.play(logging=logging)
+            player.play(logging=logging)
         else:
             player.add_to_playlist(self.song)
     
