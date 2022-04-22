@@ -11,8 +11,8 @@ from essentials.commands.music.daycore import DaycoreCommand
 from essentials.commands.music.setspeed import SetSpeedCommand
 from essentials.commands.music.resetspeed import ResetSpeedCommand
 from essentials.commands.music.previous import PreviousCommand
+from essentials.commands.lyrics.lyrics import LyricsCommand
 from essentials.music.song import Song
-from m4y_discord_bot.essentials.commands.lyrics.lyrics import LyricsCommand
 
 class MusicBot:
     def __init__(self, bot) -> None:
