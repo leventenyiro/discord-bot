@@ -12,6 +12,7 @@ from essentials.commands.music.setspeed import SetSpeedCommand
 from essentials.commands.music.resetspeed import ResetSpeedCommand
 from essentials.commands.music.previous import PreviousCommand
 from essentials.music.song import Song
+from m4y_discord_bot.essentials.commands.lyrics.lyrics import LyricsCommand
 
 class MusicBot:
     def __init__(self, bot) -> None:
@@ -70,6 +71,10 @@ class MusicBot:
     
     async def previous(self, ctx):
         cmd = PreviousCommand(ctx, self)
+        await cmd.run()
+
+    async def lyrics(self, ctx, song_title):
+        cmd = LyricsCommand(ctx, self, song_title)
         await cmd.run()
 
     def add_server(self, id, server):

@@ -64,6 +64,10 @@ class Music(BaseCog):
     async def previous(self, ctx):
         await self._music_bot.previous(ctx)
 
+    @commands.command()
+    async def lyrics(self, ctx, *song_title):
+        await self._music_bot.lyrics(ctx, song_title)
+
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         if member.id != member.guild.me.id:
