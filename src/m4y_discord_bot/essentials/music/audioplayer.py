@@ -1,5 +1,6 @@
 import discord
 import asyncio
+import random
 
 from utils.logger import Logger
 
@@ -20,6 +21,7 @@ class AudioPlayer:
         self._loop = False
         self._nightcore = False
         self._daycore = False
+        self._shuffle = False
 
     def get_playlist_length(self):
         return len(self.playlist)
@@ -35,6 +37,8 @@ class AudioPlayer:
     
     def get_current_song(self):
         try:
+            if self._shuffle:
+                return self.playlist[random.randint(0, self.get_playlist_length() - 1)]
             return self.playlist[0]
         except IndexError:
             return None
@@ -127,3 +131,9 @@ class AudioPlayer:
 
     def set_speed(self, speed):
         self.SPEED = speed
+
+    def toggle_shuffle(self):
+        self._shuffle = not self._shuffle
+
+    def is_shuffle(self):
+        return self._shuffle
