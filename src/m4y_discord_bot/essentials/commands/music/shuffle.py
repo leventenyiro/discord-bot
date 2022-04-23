@@ -16,7 +16,7 @@ class ShuffleCommand(BaseCommand):
             voice_channel = None
         required_permissions = [
             (self.server, InfoEmbed('I am not on any voice channel!')),
-            (ctx.author.voice is not None, InfoEmbed('You have to be in a voice channel to remove song from playlist!')),
+            (ctx.author.voice is not None, InfoEmbed('You have to be in a voice channel to shuffle songs in playlist!')),
             (text_channel is not None and ctx.channel.id == text_channel.id, InfoEmbed(f'Commands can be accessed from {text_channel.name if text_channel is not None else None}!')),
             (ctx.author.voice is not None and voice_channel is not None and ctx.author.voice.channel.id == voice_channel.id, InfoEmbed('We are not in the same room!'))
         ]
