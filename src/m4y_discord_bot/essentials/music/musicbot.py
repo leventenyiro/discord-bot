@@ -16,6 +16,7 @@ from essentials.commands.music.shuffle import ShuffleCommand
 from essentials.commands.music.queue import QueueCommand
 from essentials.commands.music.bassboost import BassboostCommand
 from essentials.music.song import Song
+from essentials.commands.music.clear import ClearCommand
 
 
 class MusicBot:
@@ -91,6 +92,9 @@ class MusicBot:
 
     async def bassboost(self, ctx):
         cmd = BassboostCommand(ctx, self)
+        
+    async def clear(self, ctx):
+        cmd = ClearCommand(ctx, self)
         await cmd.run()
 
     def add_server(self, id, server):
