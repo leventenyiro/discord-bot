@@ -103,6 +103,9 @@ class AudioPlayer:
             self._loop = False
         if self.voice_client.is_playing():
             self.voice_client.stop()
+
+    def clear(self):
+        self.playlist = [self.get_current_song()]
     
     def loop(self):
         self._loop = not self._loop

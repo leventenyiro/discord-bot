@@ -26,3 +26,4 @@ class NowPlayingCommand(BaseCommand):
 
     async def logic(self, logging=True):
         pass
+    

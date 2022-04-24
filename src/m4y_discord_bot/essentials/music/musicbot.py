@@ -18,7 +18,6 @@ from essentials.commands.music.bassboost import BassboostCommand
 from essentials.music.song import Song
 from essentials.commands.music.clear import ClearCommand
 
-
 class MusicBot:
     def __init__(self, bot) -> None:
         self.bot = bot

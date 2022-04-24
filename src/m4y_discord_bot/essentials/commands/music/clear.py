@@ -16,9 +16,16 @@ class ClearCommand(BaseCommand):
             text_channel = self.server['text_channel']
         except Exception:
             text_channel = None
+        try:
+            voice_channel = self.server['voice_channel']
+        except Exception:
+            voice_channel = None
         required_permissions = [
-            (self.server and self.server['audio_player'].get_playlist_length() > 1, InfoEmbed('The playlist is empty!'))
-            #(text_channel is not None and ctx.channel.id == text_channel.id, InfoEmbed(f'Text channel cleared!'))
+            (self.server, InfoEmbed('I am not on any voice channel!')),
+            (ctx.author.voice is not None, InfoEmbed('You have to be in a voice channel to clear the playlist!')),
+            (text_channel is not None and ctx.channel.id == text_channel.id, InfoEmbed(f'Commands can be accessed from {text_channel.name if text_channel is not None else None}!')),
+            (self.server and self.server['audio_player'].get_playlist_length() != 0, InfoEmbed('There is no song in the playlist!')),
+            (self.server and self.server['audio_player'].get_playlist_length() != 1, InfoEmbed('There is only one song in the playlist!'))
         ]
         response = [
             InfoEmbed('Playlist cleared!')
@@ -30,5 +37,4 @@ class ClearCommand(BaseCommand):
         player = server['audio_player']
         if logging:
             Logger.info(f'{PromptColors.CGREENBG}{self.ctx.guild.id}{PromptColors.CEND} Playlist cleared!')
-        player.playlist = [player.get_current_song()]
-        
+        player.clear()
