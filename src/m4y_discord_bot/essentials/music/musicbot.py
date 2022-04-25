@@ -107,3 +107,9 @@ class MusicBot:
             return self.servers[id]
         except KeyError:
             return False
+
+    def get_queue_embed(self, server_id):
+        try:
+            return self.servers[server_id]['queue_message']
+        except KeyError:
+            return False

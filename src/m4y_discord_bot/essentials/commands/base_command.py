@@ -12,6 +12,7 @@ class BaseCommand:
         self.ctx = ctx
         self.required_permissions = required_permissions
         self.response = response
+        self.messages = []
         pass
     
     async def run(self, logging=True):
@@ -25,8 +26,13 @@ class BaseCommand:
                 return message.title
         await self.logic(logging=logging)
         for res in self.response:
-            await self.ctx.send(embed = res)
+            self.messages.append(await self.ctx.send(embed = res))
+        await self.after()
 
     @abstractmethod
     async def logic(self, logging=True):
+        pass
+    
+    @abstractmethod
+    async def after(self):
         pass

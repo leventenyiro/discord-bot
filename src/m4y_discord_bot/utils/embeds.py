@@ -80,6 +80,7 @@ class PlayEmbed(MusicEmbed):
         super().__init__(song, 'Added Song')
 
 class QueueEmbed(BaseEmbed):
+    REACTIONS = ['⬅️', '➡️']
     def __init__(self, audio_player, **kwargs):
         super().__init__(**kwargs)
         if audio_player is None:

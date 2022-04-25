@@ -169,3 +169,8 @@ class AudioPlayer:
         if self._page + 1 == self.get_max_page():
             return
         self._page += 1
+
+    def decrement_page(self):
+        if self._page - 1 == -1:
+            return
+        self._page -= 1

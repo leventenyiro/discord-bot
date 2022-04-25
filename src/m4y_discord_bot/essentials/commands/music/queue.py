@@ -31,3 +31,19 @@ class QueueCommand(BaseCommand):
 
     async def logic(self, logging=True):
         pass
+
+    async def after(self):
+        queue_message = self.messages[0]
+        try:
+            await self.server['queue_message'].clear_reactions()
+            await self.server['queue_message'].delete()
+        except KeyError:
+            pass
+        self.server['queue_context'] = self.ctx
+        audio_player = self.server['audio_player']
+        page = audio_player.get_page()
+        if page != 0:
+            await queue_message.add_reaction(QueueEmbed.REACTIONS[0])
+        if page != audio_player.get_max_page()-1:
+            await queue_message.add_reaction(QueueEmbed.REACTIONS[1])
+        self.server['queue_message'] = queue_message

@@ -17,6 +17,7 @@ intents = discord.Intents.default()
 intents.members = True
 intents.messages = True
 intents.voice_states = True
+intents.reactions = True
 
 file = open("./botconfig.json", "r")
 botinfo = json.loads(file.read())
