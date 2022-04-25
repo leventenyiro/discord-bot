@@ -45,6 +45,8 @@ class AudioPlayer:
     def play(self, logging=True):
         if self._shuffle:
             self._current_song_index = random.randint(0, self.get_playlist_length() - 1)
+        else:
+            self._current_song_index = 0
         current_song = self.get_current_song()
         stream_url = current_song.get_stream_url()
         stream = discord.FFmpegPCMAudio(stream_url, **self.GET_FFMPEG_OPTIONS())
@@ -137,8 +139,6 @@ class AudioPlayer:
 
     def toggle_shuffle(self):
         self._shuffle = not self._shuffle
-        if not self._shuffle:
-            self._current_song_index = 0
 
     def is_shuffle(self):
         return self._shuffle
