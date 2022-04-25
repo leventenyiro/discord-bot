@@ -13,6 +13,7 @@ from essentials.commands.music.resetspeed import ResetSpeedCommand
 from essentials.commands.music.previous import PreviousCommand
 from essentials.commands.lyrics.lyrics import LyricsCommand
 from essentials.commands.music.shuffle import ShuffleCommand
+from essentials.commands.music.queue import QueueCommand
 from essentials.music.song import Song
 
 class MusicBot:
@@ -80,6 +81,10 @@ class MusicBot:
 
     async def shuffle(self, ctx):
         cmd = ShuffleCommand(ctx, self)
+        await cmd.run()
+    
+    async def queue(self, ctx):
+        cmd = QueueCommand(ctx, self)
         await cmd.run()
 
     def add_server(self, id, server):

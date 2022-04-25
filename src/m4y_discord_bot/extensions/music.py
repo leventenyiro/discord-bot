@@ -71,6 +71,10 @@ class Music(BaseCog):
     @commands.command()
     async def shuffle(self, ctx):
         await self._music_bot.shuffle(ctx)
+    
+    @commands.command()
+    async def queue(self, ctx):
+        await self._music_bot.queue(ctx)
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
