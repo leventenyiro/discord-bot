@@ -1,6 +1,7 @@
 import discord
 import asyncio
 import random
+import math
 
 from utils.logger import Logger
 
@@ -12,6 +13,7 @@ class AudioPlayer:
     DEFAULT_SAMPLE_RATE = 48000
     NIGHTCORE_SAMPLE_RATE = 36000
     DAYCORE_SAMPLE_RATE = 64000
+    QUEUE_RANGE = 5
     # KNOWN BUGS:
     # - WHEN JOINING THE CHANNEL AFTER INITIALIZATION OF THE AUDIOPLAYER, YOU CANT HEAR THE BOT
     def __init__(self, voice_client) -> None:
@@ -23,6 +25,7 @@ class AudioPlayer:
         self._daycore = False
         self._shuffle = False
         self._current_song_index = 0
+        self._page = 0
 
     def get_playlist_length(self):
         return len(self.playlist)
@@ -43,6 +46,7 @@ class AudioPlayer:
             return None
 
     def play(self, logging=True):
+        self._page = 0
         if self._shuffle:
             self._current_song_index = random.randint(0, self.get_playlist_length() - 1)
         else:
@@ -145,3 +149,28 @@ class AudioPlayer:
 
     def get_current_song_index(self):
         return self._current_song_index
+
+    def get_page(self):
+        return self._page
+
+    def get_queue(self):
+        queue = []
+        for x in range(self._page*self.QUEUE_RANGE, self._page*self.QUEUE_RANGE+self.QUEUE_RANGE):
+            try:
+                queue.append((x,self.playlist[x]))
+            except IndexError:
+                pass
+        return queue
+
+    def get_max_page(self):
+        return math.ceil(self.get_playlist_length()/self.QUEUE_RANGE)
+
+    def increment_page(self):
+        if self._page + 1 == self.get_max_page():
+            return
+        self._page += 1
+
+    def decrement_page(self):
+        if self._page - 1 == -1:
+            return
+        self._page -= 1

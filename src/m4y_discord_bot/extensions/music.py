@@ -2,6 +2,7 @@ from discord.ext import commands
 
 from extensions.base_cog import BaseCog
 from essentials.music.musicbot import MusicBot
+from utils.embeds import QueueEmbed
 from utils.logger import Logger
 
 
@@ -71,6 +72,10 @@ class Music(BaseCog):
     @commands.command()
     async def shuffle(self, ctx):
         await self._music_bot.shuffle(ctx)
+    
+    @commands.command()
+    async def queue(self, ctx):
+        await self._music_bot.queue(ctx)
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
@@ -92,6 +97,35 @@ class Music(BaseCog):
         if channel.id != music_bot_chache['text_channel'].id:
             return
         self._music_bot.clear_text_channel()
+
+    @commands.Cog.listener()
+    async def on_reaction_add(self, reaction, user):
+        if user.id == self.bot.user.id:
+            return
+        server = self._music_bot.get_server(reaction.message.guild.id)
+        if not server:
+            return
+        if reaction.message != server['queue_message']:
+            return
+        if reaction.emoji not in QueueEmbed.REACTIONS:
+            return
+        try:
+            ctx = server['queue_context']
+        except Exception:
+            ctx = None
+        if ctx is None:
+            return
+        try:
+            audio_player = server['audio_player']
+        except Exception:
+            audio_player = None
+        if audio_player is None:
+            return
+        if reaction.emoji == QueueEmbed.REACTIONS[0]:
+            audio_player.decrement_page()
+        if reaction.emoji == QueueEmbed.REACTIONS[1]:
+            audio_player.increment_page()
+        await self.queue(ctx)
 
 def setup(client):
     client.add_cog(Music(client))
