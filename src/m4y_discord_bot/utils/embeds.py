@@ -78,3 +78,38 @@ class NowPlayingEmbed(MusicEmbed):
 class PlayEmbed(MusicEmbed):
     def __init__(self, song):
         super().__init__(song, 'Added Song')
+
+class QueueEmbed(BaseEmbed):
+    def __init__(self, audio_player, **kwargs):
+        super().__init__(**kwargs)
+        if audio_player is None:
+            return
+        self._queue = audio_player.get_queue()
+        self._page = audio_player.get_page()+1
+        self._max_page = audio_player.get_max_page()
+        self.title = 'The current queue'
+        self.description = self._get_queue_values()
+        self.set_footer(text=f'{self._page}/{self._max_page}')
+
+    def _get_queue_values(self):
+        value = ""
+        for song in self._queue:
+            index = song[0]
+            song_obj = song[1]
+            value += f'`{index+1}.` [{song_obj.title}]({song_obj.get_url()}) | `{self._time_conversion(song_obj.duration_seconds)} Requested by: {song_obj.requested_by}`\n'
+        return value
+
+    def _time_conversion(self, time):
+        minutes = math.floor(time / 60)
+        minute_string = ''
+        if minutes < 10:
+            minute_string = f'0{minutes}'
+        else:
+            minute_string = f'{minutes}'
+        seconds = time % 60
+        second_string = ''
+        if seconds < 10:
+            second_string = f'0{seconds}'
+        else:
+            second_string = f'{seconds}'
+        return f'{minute_string}:{second_string}'
