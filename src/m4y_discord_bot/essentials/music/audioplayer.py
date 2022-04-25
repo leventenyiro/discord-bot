@@ -38,13 +38,13 @@ class AudioPlayer:
     
     def get_current_song(self):
         try:
-            if self._shuffle:
-                self._current_song_index = random.randint(0, self.get_playlist_length() - 1)
             return self.playlist[self._current_song_index]
         except IndexError:
             return None
 
     def play(self, logging=True):
+        if self._shuffle:
+            self._current_song_index = random.randint(0, self.get_playlist_length() - 1)
         current_song = self.get_current_song()
         stream_url = current_song.get_stream_url()
         stream = discord.FFmpegPCMAudio(stream_url, **self.GET_FFMPEG_OPTIONS())
