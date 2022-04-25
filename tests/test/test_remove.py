@@ -12,7 +12,7 @@ class TestRemove(unittest.TestCase):
         'not_the_same_text_channel': 'Commands can be accessed from {0}!',
         'not_the_same_voice_channel': 'We are not in the same room!',
         'index_out_of_range': 'Playlist index is out of range!',
-        'skip_instead_of_remove': 'You should use skip command instead of this!'
+        'skip_instead_of_remove': 'You can not remove currently playing song! Use skip instead of this!'
     }
 
     def setUp(self):
@@ -123,6 +123,6 @@ class TestRemove(unittest.TestCase):
         }
         self.music_bot.add_server(ctx.guild.id, server)
         audio_player.add_to_playlist(unittest.mock.MagicMock())
-        command = RemoveCommand(ctx, self.music_bot, 1)
+        command = RemoveCommand(ctx, self.music_bot, audio_player.get_current_song_index() + 1)
         result = asyncio.run(command.run(logging=False))
         self.assertEqual(result, self.error_messages['skip_instead_of_remove'])

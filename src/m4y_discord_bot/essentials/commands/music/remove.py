@@ -21,8 +21,8 @@ class RemoveCommand(BaseCommand):
             (self.server and self.server['audio_player'].get_playlist_length() > 0, InfoEmbed('There is no song currently playing!')),
             (text_channel is not None and ctx.channel.id == text_channel.id, InfoEmbed(f'Commands can be accessed from {text_channel.name if text_channel is not None else None}!')),
             (ctx.author.voice is not None and voice_channel is not None and ctx.author.voice.channel.id == voice_channel.id, InfoEmbed('We are not in the same room!')),
-            (self.server and index > 0 and index <= self.server['audio_player'].get_playlist_length(), InfoEmbed('Playlist index is out of range!')),
-            (self.server and index > 1, InfoEmbed('You should use skip command instead of this!'))
+            (self.server and self.index > 0 and self.index <= self.server['audio_player'].get_playlist_length(), InfoEmbed('Playlist index is out of range!')),
+            (self.server and (self.index - 1) != self.server['audio_player'].get_current_song_index(), InfoEmbed('You can not remove currently playing song! Use skip instead of this!'))
         ]
         response = [
             InfoEmbed('Removed!')

@@ -1,5 +1,6 @@
 import discord
 import asyncio
+import random
 
 from utils.logger import Logger
 
@@ -20,6 +21,8 @@ class AudioPlayer:
         self._loop = False
         self._nightcore = False
         self._daycore = False
+        self._shuffle = False
+        self._current_song_index = 0
 
     def get_playlist_length(self):
         return len(self.playlist)
@@ -35,11 +38,15 @@ class AudioPlayer:
     
     def get_current_song(self):
         try:
-            return self.playlist[0]
+            return self.playlist[self._current_song_index]
         except IndexError:
             return None
 
     def play(self, logging=True):
+        if self._shuffle:
+            self._current_song_index = random.randint(0, self.get_playlist_length() - 1)
+        else:
+            self._current_song_index = 0
         current_song = self.get_current_song()
         stream_url = current_song.get_stream_url()
         stream = discord.FFmpegPCMAudio(stream_url, **self.GET_FFMPEG_OPTIONS())
@@ -60,7 +67,7 @@ class AudioPlayer:
         if not self.voice_client.is_connected():
             return
         if not self._loop:
-            previous_song = self.playlist.pop(0)
+            previous_song = self.playlist.pop(self._current_song_index)
             if previous_song is not None:
                 self.previous_songs.append(previous_song)
             if self.get_previous_songs_length() > self.MAX_PREVIOUS_SONG_COUNT:
@@ -80,6 +87,8 @@ class AudioPlayer:
         self.playlist.append(song)
 
     def remove_from_playlist(self, index):
+        if self._shuffle and index - 1 < self._current_song_index:
+            self._current_song_index -= 1
         del self.playlist[index - 1]
 
     def skip(self):
@@ -127,3 +136,12 @@ class AudioPlayer:
 
     def set_speed(self, speed):
         self.SPEED = speed
+
+    def toggle_shuffle(self):
+        self._shuffle = not self._shuffle
+
+    def is_shuffle(self):
+        return self._shuffle
+
+    def get_current_song_index(self):
+        return self._current_song_index

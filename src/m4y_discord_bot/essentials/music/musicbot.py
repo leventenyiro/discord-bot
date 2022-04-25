@@ -12,6 +12,7 @@ from essentials.commands.music.setspeed import SetSpeedCommand
 from essentials.commands.music.resetspeed import ResetSpeedCommand
 from essentials.commands.music.previous import PreviousCommand
 from essentials.commands.lyrics.lyrics import LyricsCommand
+from essentials.commands.music.shuffle import ShuffleCommand
 from essentials.music.song import Song
 
 class MusicBot:
@@ -75,6 +76,10 @@ class MusicBot:
 
     async def lyrics(self, ctx, song_title):
         cmd = LyricsCommand(ctx, self, song_title)
+        await cmd.run()
+
+    async def shuffle(self, ctx):
+        cmd = ShuffleCommand(ctx, self)
         await cmd.run()
 
     def add_server(self, id, server):
