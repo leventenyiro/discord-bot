@@ -14,6 +14,8 @@ class AudioPlayer:
     NIGHTCORE_SAMPLE_RATE = 36000
     DAYCORE_SAMPLE_RATE = 64000
     QUEUE_RANGE = 5
+    BASSBOOST_FREQUENCY = 120
+    GAIN = 20
     # KNOWN BUGS:
     # - WHEN JOINING THE CHANNEL AFTER INITIALIZATION OF THE AUDIOPLAYER, YOU CANT HEAR THE BOT
     def __init__(self, voice_client) -> None:
@@ -26,6 +28,7 @@ class AudioPlayer:
         self._shuffle = False
         self._current_song_index = 0
         self._page = 0
+        self._bassboost = False
 
     def get_playlist_length(self):
         return len(self.playlist)
@@ -61,7 +64,7 @@ class AudioPlayer:
     def GET_FFMPEG_OPTIONS(self):
         FFMPEG_OPTIONS = {
             'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 60', 
-            'options': f'-filter_complex atempo={self.SPEED} -vn -ar {self.SAMPLE_RATE}'
+            'options': f'-filter:a loudnorm,atempo={self.SPEED}{self._bassboost_options()} -vn -ar {self.SAMPLE_RATE}'
         }
         return FFMPEG_OPTIONS
 
@@ -132,11 +135,22 @@ class AudioPlayer:
         if not self._daycore:
             self.SAMPLE_RATE = self.DEFAULT_SAMPLE_RATE
 
+    def _bassboost_options(self):
+        if self._bassboost:
+            return f',equalizer=f=1:width_type=h:width={self.BASSBOOST_FREQUENCY}:g={self.GAIN}'
+        return ''
+
+    def toggle_bassboost(self):
+        self._bassboost = not self._bassboost
+
     def is_daycore_mode(self):
         return self._daycore
 
     def is_nightcore_mode(self):
         return self._nightcore
+
+    def is_bassboost_mode(self):
+        return self._bassboost
 
     def set_speed(self, speed):
         self.SPEED = speed
