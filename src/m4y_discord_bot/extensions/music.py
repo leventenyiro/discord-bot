@@ -77,6 +77,10 @@ class Music(BaseCog):
     async def queue(self, ctx):
         await self._music_bot.queue(ctx)
 
+    @commands.command()
+    async def bassboost(self, ctx):
+        await self._music_bot.bassboost(ctx)
+
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         if member.id != member.guild.me.id:

@@ -1,10 +1,7 @@
 import unittest
 from urllib import response
 from external.lyrics.lyrics import Lyrics
-# from essentials.music.audioplayer import AudioPlayer
-# from essentials.music.musicbot import MusicBot
 from utility.mockups import *
-# az a lényeg, hogy a search_song lefusson
 
 class TestLyricsApi(unittest.TestCase):
     def setUp(self):
