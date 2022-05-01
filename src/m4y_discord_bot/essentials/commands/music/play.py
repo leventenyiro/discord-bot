@@ -1,5 +1,6 @@
 import re
 from external.spotify.spotify import Spotify
+from external.youtube.youtube import Youtube
 from essentials.commands.base_command import BaseCommand
 from essentials.music.song import Song
 from utils.logger import Logger
@@ -7,11 +8,11 @@ from utils.promptcolor import PromptColors
 from utils.embeds import PlayEmbed, InfoEmbed
 
 class PlayCommand(BaseCommand):
-    def __init__(self, ctx, music_bot, url, **kw) -> None:
+    def __init__(self, ctx, music_bot, url, *args, **kw) -> None:
         self.music_bot = music_bot
         self.ctx = ctx
         #self.song = self.create_song(url)
-        self.song = kw.get('song', self.create_song(url))
+        self.song = kw.get('song', self.create_song(url, *args))
         server = music_bot.get_server(ctx.channel.guild.id)
         try:
             text_channel = server['text_channel']
@@ -44,7 +45,7 @@ class PlayCommand(BaseCommand):
         else:
             player.add_to_playlist(self.song)
     
-    def create_song(self, url):
+    def create_song(self, url, *args):
         if url is None:
             return
         vid_id = None
@@ -71,4 +72,7 @@ class PlayCommand(BaseCommand):
         if vid_id is not None and re.match(r'^[a-zA-Z0-9_-]{11}$',vid_id) or re.match(r'^https:\/\/soundcloud\.com\/\S+$', url):
             Logger.info(f'A song has been created.')
             return Song(url, self.ctx)
+        elif vid_id is None and url is not None:
+            string = f"{url} {' '.join(f'{arg}' for arg in args)}"
+            return self.create_song(Youtube.searchSong(string))
         return False

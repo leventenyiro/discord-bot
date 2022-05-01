@@ -31,10 +31,10 @@ class MusicBot:
         cmd = DisconnectCommand(ctx, self)
         await cmd.run()
     
-    async def play(self, ctx, url):
+    async def play(self, ctx, url, *args):
         if not self.get_server(ctx.guild.id):
             await self.connect(ctx)
-        cmd = PlayCommand(ctx,self,url)
+        cmd = PlayCommand(ctx,self,url, *args)
         await cmd.run()
 
     async def skip(self, ctx):
