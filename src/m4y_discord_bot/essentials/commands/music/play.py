@@ -49,14 +49,10 @@ class PlayCommand(BaseCommand):
         if url is None:
             return
         vid_id = None
-        if url.startswith('https://www.youtube.com/watch?v='):
-            vid_id = url.split('v=')[1][0:11]
-        if url.startswith('https://youtu.be/'):
-            vid_id = url.split('youtu.be/')[1][0:11]
         if url.startswith('https://open.spotify.com/'):
             try:
                 if '/track/' in url:
-                    #Spotify.get_track(url) - returns author and title
+                    url = Youtube.searchSong(Spotify.get_track(url))
                     pass
                 elif '/playlist/' in url:
                     #Spotify.get_playlist(url) - returns list of author and title
@@ -69,6 +65,10 @@ class PlayCommand(BaseCommand):
             except Exception as ex:
                 #print(ex) - Invalid link
                 pass
+        if url.startswith('https://www.youtube.com/watch?v='):
+            vid_id = url.split('v=')[1][0:11]
+        if url.startswith('https://youtu.be/'):
+            vid_id = url.split('youtu.be/')[1][0:11]
         if vid_id is not None and re.match(r'^[a-zA-Z0-9_-]{11}$',vid_id) or re.match(r'^https:\/\/soundcloud\.com\/\S+$', url):
             Logger.info(f'A song has been created.')
             return Song(url, self.ctx)
