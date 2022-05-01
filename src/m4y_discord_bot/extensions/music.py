@@ -22,8 +22,8 @@ class Music(BaseCog):
         await self._music_bot.disconnect(ctx)
     
     @commands.command()
-    async def play(self, ctx, url):
-        await self._music_bot.play(ctx, url)
+    async def play(self, ctx, url, *args):
+        await self._music_bot.play(ctx, url, *args)
 
     @commands.command()
     async def skip(self, ctx):
