@@ -1,5 +1,6 @@
 import re
 from external.spotify.spotify import Spotify
+from external.youtube.youtube import Youtube
 from essentials.commands.base_command import BaseCommand
 from essentials.music.song import Song
 from utils.logger import Logger
@@ -71,4 +72,6 @@ class PlayCommand(BaseCommand):
         if vid_id is not None and re.match(r'^[a-zA-Z0-9_-]{11}$',vid_id) or re.match(r'^https:\/\/soundcloud\.com\/\S+$', url):
             Logger.info(f'A song has been created.')
             return Song(url, self.ctx)
+        elif vid_id is None and url is not None:
+            return self.create_song(Youtube.searchSong(url))
         return False
