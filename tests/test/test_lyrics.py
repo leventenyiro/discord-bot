@@ -4,10 +4,11 @@ from essentials.music.audioplayer import AudioPlayer
 from essentials.music.musicbot import MusicBot
 from utility.mockups import *
 
-class TestSetSpeed(unittest.TestCase):
+class TestLyrics(unittest.TestCase):
     error_messages = {
         'no_server': 'I am not on any voice channel!',
         'member_not_on_voice': 'You have to be in a voice channel to get lyrics of the music!',
+        'no_arguments': 'No arguments given!',
         'no_lyrics': 'I have not find any lyrics of {0}!',
         'not_the_same_text_channel': 'Commands can be accessed from {0}!',
         'not_the_same_voice_channel': 'We are not in the same room!'
@@ -16,7 +17,7 @@ class TestSetSpeed(unittest.TestCase):
     def setUp(self):
         self.bot = MockBot()
         self.music_bot = MusicBot(bot)
-        self.song_title = None
+        self.song_title = ('asd',)
         self.lyrics = unittest.mock.MagicMock()
         self.kwargs = { 'lyrics': self.lyrics }
 
@@ -52,7 +53,25 @@ class TestSetSpeed(unittest.TestCase):
         self.assertEqual(result, self.error_messages['member_not_on_voice'])
         self.assertTrue(self.music_bot.get_server(ctx.guild.id))
 
+    def test_lyrics_no_arguments(self):
+        self.song_title = ()
+        ctx = MockContext()
+        voice_channel = ctx.author.voice.channel
+        text_channel = ctx.channel
+        audio_player = AudioPlayer(MockVoiceClient())
+        server = {
+            'voice_channel': voice_channel, 
+            'text_channel': text_channel,
+            'audio_player': audio_player
+        }
+        self.music_bot.add_server(ctx.guild.id, server)
+        command = LyricsCommand(ctx, self.music_bot, self.song_title, **self.kwargs)
+        result = asyncio.run(command.run(logging=False))
+        self.assertEqual(self.error_messages['no_arguments'], result)
+
     def test_lyrics_no_lyrics(self):
+        title = 'asd'
+        self.song_title = (title,)
         ctx = MockContext()
         voice_channel = ctx.author.voice.channel
         text_channel = ctx.channel
@@ -66,7 +85,7 @@ class TestSetSpeed(unittest.TestCase):
         self.lyrics.get_lyrics.return_value = {'full_title': None, 'url': None}
         command = LyricsCommand(ctx, self.music_bot, self.song_title, **self.kwargs)
         result = asyncio.run(command.run(logging=False))
-        self.assertEqual(self.error_messages['no_lyrics'].format(self.song_title), result)
+        self.assertEqual(self.error_messages['no_lyrics'].format(title), result)
 
     def test_lyrics_not_the_same_text_channel(self):
         voice_channel = MockVoiceChannel(id=69, name='asd')

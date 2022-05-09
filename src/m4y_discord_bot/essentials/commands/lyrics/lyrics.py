@@ -9,7 +9,7 @@ class LyricsCommand(BaseCommand):
         self.ctx = ctx
 
         title = " "
-        if song_title != None:
+        if song_title is not None:
             title = title.join(song_title)
         self.lyrics_object = kw.get('lyrics', Lyrics)
         self.lyrics = self.lyrics_object.get_lyrics(title)
@@ -26,7 +26,8 @@ class LyricsCommand(BaseCommand):
         required_permissions = [
             (self.server, InfoEmbed('I am not on any voice channel!')),
             (ctx.author.voice is not None, InfoEmbed('You have to be in a voice channel to get lyrics of the music!')),
-            (self.lyrics["full_title"] is not None and self.lyrics["url"] is not None, InfoEmbed(f'I have not find any lyrics of {song_title}!')),
+            (title.rstrip(), InfoEmbed('No arguments given!')),
+            (self.lyrics["full_title"] is not None and self.lyrics["url"] is not None, InfoEmbed(f'I have not find any lyrics of {title}!')),
             (text_channel is not None and ctx.channel.id == text_channel.id, InfoEmbed(f'Commands can be accessed from {text_channel.name if text_channel is not None else None}!')),
             (ctx.author.voice is not None and voice_channel is not None and ctx.author.voice.channel.id == voice_channel.id, InfoEmbed('We are not in the same room!'))
         ]
