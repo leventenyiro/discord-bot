@@ -68,6 +68,10 @@ class Music(BaseCog):
     @commands.command()
     async def lyrics(self, ctx, *song_title):
         await self._music_bot.lyrics(ctx, song_title)
+    
+    @commands.command()
+    async def clear(self, ctx):
+        await self._music_bot.clear(ctx)
 
     @commands.command()
     async def shuffle(self, ctx):
