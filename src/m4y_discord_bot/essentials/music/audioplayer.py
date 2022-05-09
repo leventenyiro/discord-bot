@@ -121,6 +121,10 @@ class AudioPlayer:
 
     def is_paused(self):
         return self.voice_client.is_paused()
+
+    def randomize(self):
+        for i in range(len(self.playlist)-1):
+            self.playlist.append(self.playlist.pop(random.randint(1, len(self.playlist)-1)))
     
     def toggle_nightcore(self):
         self._daycore = False

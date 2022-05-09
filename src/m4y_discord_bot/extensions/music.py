@@ -76,6 +76,10 @@ class Music(BaseCog):
     @commands.command()
     async def shuffle(self, ctx):
         await self._music_bot.shuffle(ctx)
+
+    @commands.command()
+    async def randomize(self, ctx):
+        await self._music_bot.randomize(ctx)
     
     @commands.command()
     async def queue(self, ctx):
