@@ -1,0 +1,1 @@
+worker: cd src/m4y_discord_bot/ && python -m index.py
