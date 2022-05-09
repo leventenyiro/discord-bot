@@ -1,5 +1,7 @@
 import requests
 import json
+import os
+
 from urllib.parse import urlparse
 from base64 import b64encode
 
@@ -7,13 +9,7 @@ class Spotify:
     @staticmethod
     def get_track(url, **kw):
         spotify_object = kw.get('spotify', requests)
-        try:
-            file = open("./botconfig.json", "r")
-            botinfo = json.loads(file.read())
-            user_pass = b64encode(bytes(f'{botinfo["spotify_client_id"]}:{botinfo["spotify_client_secret"]}', encoding='utf8')).decode("ascii")
-        except:
-            user_pass = None
-            pass
+        user_pass = b64encode(bytes(f'{os.environ.get("SPOTIFY_CLIENT_ID")}:{os.environ.get("SPOTIFY_CLIENT_SECRET")}', encoding='utf8')).decode("ascii")
 
         response_auth = spotify_object.post('https://accounts.spotify.com/api/token', headers={'Authorization': f'Basic {user_pass}'}, data={'grant_type': 'client_credentials'})
 
@@ -30,13 +26,7 @@ class Spotify:
     @staticmethod
     def get_playlist(url, **kw):
         spotify_object = kw.get('spotify', requests)
-        try:
-            file = open("./botconfig.json", "r")
-            botinfo = json.loads(file.read())
-            user_pass = b64encode(bytes(f'{botinfo["spotify_client_id"]}:{botinfo["spotify_client_secret"]}', encoding='utf8')).decode("ascii")
-        except:
-            user_pass = None
-            pass
+        user_pass = b64encode(bytes(f'{os.environ.get("SPOTIFY_CLIENT_ID")}:{os.environ.get("SPOTIFY_CLIENT_SECRET")}', encoding='utf8')).decode("ascii")
 
         response_auth = spotify_object.post('https://accounts.spotify.com/api/token', headers={'Authorization': f'Basic {user_pass}'}, data={'grant_type': 'client_credentials'})
         
@@ -57,13 +47,7 @@ class Spotify:
     @staticmethod
     def get_album(url, **kw):
         spotify_object = kw.get('spotify', requests)
-        try:
-            file = open("./botconfig.json", "r")
-            botinfo = json.loads(file.read())
-            user_pass = b64encode(bytes(f'{botinfo["spotify_client_id"]}:{botinfo["spotify_client_secret"]}', encoding='utf8')).decode("ascii")
-        except:
-            user_pass = None
-            pass
+        user_pass = b64encode(bytes(f'{os.environ.get("SPOTIFY_CLIENT_ID")}:{os.environ.get("SPOTIFY_CLIENT_SECRET")}', encoding='utf8')).decode("ascii")
 
         response_auth = spotify_object.post('https://accounts.spotify.com/api/token', headers={'Authorization': f'Basic {user_pass}'}, data={'grant_type': 'client_credentials'})
 

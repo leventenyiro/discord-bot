@@ -5,16 +5,17 @@ stages:
   - lint
   - build
   - test
+  - production
 
 before_script:
-  - pip install -r ./install/requirements.txt
+  - pip install -r ./requirements.txt
   - apt-get update
 
 Safety:
   stage: safety
   script:
     - pip install safety
-    - safety check --full-report -r install/requirements.txt
+    - safety check --full-report -r requirements.txt
 
 PyLint:
   stage: lint
@@ -39,3 +40,16 @@ test:
     - apt-get install -y ffmpeg
     - cd ./tests
     - python -m unittest
+
+production:
+  type: deploy
+  before_script:
+    - apt-get update
+  stage: production
+  image: ruby:latest
+  script:
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
+  only:
+    - main
