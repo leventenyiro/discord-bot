@@ -19,10 +19,7 @@ intents.messages = True
 intents.voice_states = True
 intents.reactions = True
 
-file = open("./botconfig.json", "r")
-botinfo = json.loads(file.read())
-
-prefix = botinfo["prefix"]
+prefix = os.environ.get('PREFIX')
 bot = commands.Bot(command_prefix=prefix, intents=intents)
 
 @bot.event
@@ -36,5 +33,5 @@ for filename in os.listdir('./extensions'):
         Logger.progress(f'Loading {filename}...')
         bot.load_extension(f'extensions.{filename[:-3]}')
 
-token = botinfo["token"]
+token = os.environ.get('TOKEN')
 bot.run(token)
