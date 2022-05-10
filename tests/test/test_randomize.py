@@ -12,7 +12,8 @@ class TestRandomizeCommand(unittest.TestCase):
         'no_server': 'I am not on any voice channel!',
         'no_song': 'There is no song in the playlist!',
         'one_song': 'There is only one song in the playlist!',
-        'not_the_same_text_channel': 'Commands can be accessed from {0}!'
+        'not_the_same_text_channel': 'Commands can be accessed from {0}!',
+        'member_not_on_voice': 'You have to be in a voice channel to randomize the playlist!'
     }
 
     def mock_song(self):
@@ -121,4 +122,14 @@ class TestRandomizeCommand(unittest.TestCase):
         command = RandomizeCommand(ctx,self.music_bot)
         result = asyncio.run(command.run(logging=False))
         self.assertEqual(result, self.error_messages['not_the_same_text_channel'].format(text_channel.name))
+        self.assertTrue(self.music_bot.get_server(ctx.guild.id))
+    
+    def test_randomize_not_on_voice_channel(self):
+        author = MockMember(voice=None)
+        ctx = MockContext(author=author)
+        server = {'voice_channel': ctx.voice.channel, 'text_channel': ctx.channel, 'audio_player': AudioPlayer(MockVoiceClient())}
+        self.music_bot.add_server(ctx.guild.id, server) 
+        command = RandomizeCommand(ctx, self.music_bot)
+        result = asyncio.run(command.run(logging=False))
+        self.assertEqual(result, self.error_messages['member_not_on_voice'])
         self.assertTrue(self.music_bot.get_server(ctx.guild.id))
