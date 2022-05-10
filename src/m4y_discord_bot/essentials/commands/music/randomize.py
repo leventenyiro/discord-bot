@@ -22,7 +22,7 @@ class RandomizeCommand(BaseCommand):
             voice_channel = None
         required_permissions = [
             (self.server, InfoEmbed('I am not on any voice channel!')),
-            (ctx.author.voice is not None, InfoEmbed('You have to be in a voice channel to clear the playlist!')),
+            (ctx.author.voice is not None, InfoEmbed('You have to be in a voice channel to randomize the playlist!')),
             (text_channel is not None and ctx.channel.id == text_channel.id, InfoEmbed(f'Commands can be accessed from {text_channel.name if text_channel is not None else None}!')),
             (self.server and self.server['audio_player'].get_playlist_length() != 0, InfoEmbed('There is no song in the playlist!')),
             (self.server and self.server['audio_player'].get_playlist_length() != 1, InfoEmbed('There is only one song in the playlist!'))
