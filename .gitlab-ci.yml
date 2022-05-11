@@ -42,7 +42,6 @@ test:
     - python -m unittest
 
 production:
-  type: deploy
   before_script:
     - apt-get update
   stage: production
