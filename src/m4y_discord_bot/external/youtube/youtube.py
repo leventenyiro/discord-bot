@@ -1,3 +1,5 @@
+# pylint: skip-file
+
 import urllib.request
 import re
 import os
