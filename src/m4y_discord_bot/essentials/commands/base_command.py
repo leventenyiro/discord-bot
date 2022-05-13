@@ -15,18 +15,20 @@ class BaseCommand:
         self.messages = []
         pass
     
-    async def run(self, logging=True):
+    async def run(self, logging=True, send_message = True):
         if not self.ctx.channel.guild.me.guild_permissions.send_messages:
             return
         for (requirement, message) in self.required_permissions:
             if not requirement:
                 if logging:
                     Logger.error(f'ERROR ({self.__class__.__name__}): {message.title}')
-                await self.ctx.send(embed = message)
+                if send_message:
+                    await self.ctx.send(embed = message)
                 return message.title
         await self.logic(logging=logging)
-        for res in self.response:
-            self.messages.append(await self.ctx.send(embed = res))
+        if send_message:
+            for res in self.response:
+                self.messages.append(await self.ctx.send(embed = res))
         await self.after()
 
     @abstractmethod

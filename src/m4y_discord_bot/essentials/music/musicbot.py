@@ -1,3 +1,4 @@
+from utils.embeds import InfoEmbed
 from essentials.commands.music.loop import LoopCommand
 from essentials.commands.music.now_playing import NowPlayingCommand
 from essentials.commands.music.pause import PauseCommand
@@ -18,6 +19,8 @@ from essentials.commands.music.queue import QueueCommand
 from essentials.commands.music.bassboost import BassboostCommand
 from essentials.music.song import Song
 from essentials.commands.music.clear import ClearCommand
+from external.youtube.youtube import Youtube
+from googleapiclient.errors import HttpError
 
 class MusicBot:
     def __init__(self, bot) -> None:
@@ -35,8 +38,21 @@ class MusicBot:
     async def play(self, ctx, url, *args):
         if not self.get_server(ctx.guild.id):
             await self.connect(ctx)
-        cmd = PlayCommand(ctx,self,url, *args)
-        await cmd.run()
+        if url.startswith('https://www.youtube.com/playlist') or url.startswith('https://youtube.com/playlist'):
+            try:
+                urls = await Youtube.create_playlist(url)
+            except HttpError as err:
+                await ctx.send(embed = InfoEmbed(f"Error occured while getting the playlist information! Code: {err.status_code}"))
+                return
+            cmd = PlayCommand(ctx, self, urls[0], *args)
+            await cmd.run(send_message = False)
+            for url in urls[1:]:
+                cmd = PlayCommand(ctx, self, url, *args)
+                await cmd.run(send_message = False)
+            await ctx.send(embed = InfoEmbed(f"{len(urls)} song has been added to the playlist."))
+        else:
+            cmd = PlayCommand(ctx,self,url, *args)
+            await cmd.run()
 
     async def skip(self, ctx):
         cmd = SkipCommand(ctx, self)
