@@ -1,0 +1,78 @@
+[
+    {
+        "title": "-connect",
+        "text": "<p>This command connects the bot to the voice channel, and initializes the audioplayer.<p>Also, by calling this command, the bot will only respond to other voice commands if those commands are called from the same text channel as the connect command has been.</p><p>The bot auto detects force disconnects and movings to other channels.</p><h6>Fails when:</h6><ul><li>The bot is already in a voice channel on the server</li><li>The user is not connected to any voice channel</li><li>The bot has no permission to speak on the channel</li><li>The bot has no permission to connect to the channel</li><li>The voice channel is full</li></ul>"
+    },
+    {
+        "title": "-disconnect",
+        "text": "<p>This command disconnects the bot from the voice channel.</p><h6>Fails when:</h6><ul><li>The bot is not on a voice channel</li><li>The user is not connected to any voice channel</li><li>The user is not in the same voice channel as the bot</li><li>The text channel is not the same text channel which the bot is working in</li></ul>"
+    },
+    {
+        "title": "-play [url/title]",
+        "text": "<p>This command starts the requested music</p><h6>Fails when:</h6><ul><li>The user is not connected to any voice channel</li><li>The requested song is not in the correct format</li><li>The text channel is not the same text channel which the bot is working in</li><li>The user is not in the same voice channel as the bot</li></ul>"
+    },
+    {
+        "title": "-skip",
+        "text": "<p>This command stops the current song and starts the next if it's exists on the playlist</p><h6>Fails when:</h6><ul><li>The bot is not connected to any voice channel</li><li>The user is not connected to any voice channel</li><li>There is not any song currently playing</li><li>The text channel is not the same text channel which the bot is working in</li><li>The user is not in the same voice channel as the bot</li></ul>"
+    },
+    {
+        "title": "-pause",
+        "text": "<p>This command stops temporary (and in cases resumes) the current song</p><h6>Fails when:</h6><ul><li>The bot is not connected to any voice channel</li><li>The user is not connected to any voice channel</li><li>There is not any song currently playing</li><li>The text channel is not the same text channel which the bot is working in</li><li>The user is not in the same voice channel as the bot</li></ul>"
+    },
+    {
+        "title": "-loop",
+        "text": "<p>This command replays the current song, when it ends</p><h6>Fails when:</h6><ul><li>The bot is not connected to any voice channel</li><li>The user is not connected to any voice channel</li><li>There is not any song currently playing</li><li>The text channel is not the same text channel which the bot is working in</li><li>The user is not in the same voice channel as the bot</li></ul>"
+    },
+    {
+        "title": "-nowplaying",
+        "text": "<p>This command shows the current song</p><h6>Fails when:</h6><ul><li>The bot is not connected to any voice channel</li><li>There is not any song currently playing</li><li>The text channel is not the same text channel which the bot is working in</li></ul>"
+    },
+    {
+        "title": "-remove [index]",
+        "text": "<p>This command remove song with selected index from the playlist</p><h6>Fails when:</h6><ul><li>The bot is not connected to any voice channel</li><li>The user is not connected to any voice channel</li><li>There is not any song currently playing</li><li>The text channel is not the same text channel which the bot is working in</li><li>The user is not in the same voice channel as the bot</li><li>Playlist index is out of range</li><li>If you try to remove currently playing song. Use skip instead of this</li></ul>"
+    },
+    {
+        "title": "-nightcore",
+        "text": "<p>This command set audioplayer to nightcore. It switches off daycore</p><h6>Fails when:</h6><ul><li>The bot is not connected to any voice channel</li><li>The user is not connected to any voice channel</li><li>The text channel is not the same text channel which the bot is working in</li><li>The user is not in the same voice channel as the bot</li></ul>"
+    },
+    {
+        "title": "-daycore",
+        "text": "<p>This command set audioplayer to daycore. It switches off nightcore</p><h6>Fails when:</h6><ul><li>The bot is not connected to any voice channel</li><li>The user is not connected to any voice channel</li><li>The text channel is not the same text channel which the bot is working in</li><li>The user is not in the same voice channel as the bot</li></ul>"
+    },
+    {
+        "title": "-setspeed [speed]",
+        "text": "<p>This command set audioplayer's speed</p><h6>Fails when:</h6><ul><li>The bot is not connected to any voice channel</li><li>The user is not connected to any voice channel</li><li>The text channel is not the same text channel which the bot is working in</li><li>The user is not in the same voice channel as the bot</li><li>Selected music speed must be in the range</li></ul>"
+    },
+    {
+        "title": "-resetspeed",
+        "text": "<p>This command reset audioplayer's speed</p><h6>Fails when:</h6><ul><li>The bot is not connected to any voice channel</li><li>The user is not connected to any voice channel</li><li>The text channel is not the same text channel which the bot is working in</li><li>The user is not in the same voice channel as the bot</li></ul>"
+    },
+    {
+        "title": "-previous",
+        "text": "<p>This command starts playing previous song</p><h6>Fails when:</h6><ul><li>The bot is not connected to any voice channel</li><li>The user is not connected to any voice channel</li><li>There are no songs that have been played before</li><li>The text channel is not the same text channel which the bot is working in</li><li>The user is not in the same voice channel as the bot</li></ul>"
+    },
+    {
+        "title": "-lyrics [title]",
+        "text": "<p>This command shows link of a lyrics by a title</p><h6>Fails when:</h6><ul><li>The bot is not connected to any voice channel</li><li>The user is not connected to any voice channel</li><li>There are no song found</li><li>The text channel is not the same text channel which the bot is working in</li><li>The user is not in the same voice channel as the bot</li></ul>"
+    },
+    {
+        "title": "-shuffle",
+        "text": "<p>This command plays songs random queue on the playlist. You can switch it off with this command too</p><h6>Fails when:</h6><ul><li>The bot is not connected to any voice channel</li><li>The user is not connected to any voice channel</li><li>The text channel is not the same text channel which the bot is working in</li><li>The user is not in the same voice channel as the bot</li></ul>"
+    },
+    {
+        "title": "-queue",
+        "text": "<p>This command shows the queue of the playlist</p><h6>Fails when:</h6><ul><li>The bot is not connected to any voice channel</li><li>There is not any song currently playing</li><li>The text channel is not the same text channel which the bot is working in</li></ul>"
+    },
+    {
+        "title": "-bassboost",
+        "text": "<p>This command toggle bassboost of the audioplayer</p><h6>Fails when:</h6><ul><li>The bot is not connected to any voice channel</li><li>The user is not connected to any voice channel</li><li>The text channel is not the same text channel which the bot is working in</li><li>The user is not in the same voice channel as the bot</li></ul>"
+    },
+    {
+        "title": "-clear",
+        "text": "<p>This remove all of the songs from the playlist</p><h6>Fails when:</h6><ul><li>The bot is not connected to any voice channel</li><li>The user is not connected to any voice channel</li><li>The text channel is not the same text channel which the bot is working in</li><li>There is not any song currently playing</li><li>There is only one song in the playlist</li></ul>"
+    },
+    {
+        "title": "-randomize",
+        "text": "<p>This command randomize the order of the songs in the playlist. Instead of shuffle, it is irreversible</p><h6>Fails when:</h6><ul><li>The bot is not connected to any voice channel</li><li>The user is not connected to any voice channel</li><li>The text channel is not the same text channel which the bot is working in</li><li>The user is not in the same voice channel as the bot</li></ul>"
+    }
+]

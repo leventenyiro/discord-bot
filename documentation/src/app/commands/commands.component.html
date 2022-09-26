@@ -1,0 +1,50 @@
+<div class="container pt-5">
+    <div class="row">
+        <div class="col-sm-5">
+            <h2>Commands</h2>
+        </div>
+        <div class="col-sm-7">
+            <div class="input-group">
+                <span class="input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                  </svg></span>
+                <input type="text" class="form-control" id="name" [formControl]="search" placeholder="Start typing to filter..." (keyup)="getCommands()">
+            </div>
+        </div>
+    </div>
+    
+    <div *ngIf="commands.length != 0; else elseDiv">
+        <div *ngFor="let command of commands" class="col-12 card mt-4">
+            <div class="py-4 px-5" data-bs-toggle="collapse" attr.data-bs-target="#collapseExample{{command.id}}" aria-expanded="false"  attr.aria-controls="#collapseExample{{command.id}}" (click)="command.isCollapsed = !command.isCollapsed">
+                <div class="row">
+                    <div class="col-6">
+                        <h4>{{ command.title }}</h4>
+                    </div>
+                    <div class="col-6 d-flex justify-content-end align-items-center">
+                        <div *ngIf="!command.isCollapsed; else up">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </div>
+                        <ng-template #up>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-up" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                            </svg>
+                        </ng-template>
+                    </div>
+                </div>
+                <div class="collapse" id="collapseExample{{command.id}}">
+                    <div [innerHTML]="command.text"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <ng-template #elseDiv>
+        <div class="d-flex justify-content-center my-4">
+            <h4>No command found!🙁</h4>
+        </div>
+
+    </ng-template>
+</div>

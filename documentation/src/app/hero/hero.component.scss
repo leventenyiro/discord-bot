@@ -1,0 +1,35 @@
+#title {
+    background-image: linear-gradient(90deg, #fdc5f5, #72ddf7);
+    color: #3b0ca9d0;
+
+    //font-family: 'Dancing Script', cursive;
+    h1 {
+        font-family: 'Inter';
+        font-weight: 200;
+        font-size: 100px;
+    }
+}
+
+.hero {
+    height: 100vh;
+
+    .hero-card {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 8px 24px 0 #00000020;
+    }
+
+    .btn-outline-purple {
+        border: 1px solid #3b0ca9d0;
+        color: #3b0ca9d0;
+    }
+    
+    .btn-outline-purple:hover {
+        background-color: #3b0ca9d0;
+        color: white;
+    }
+
+    .btn-outline-purple:focus {
+        outline: 3px solid #3b0ca931;
+    }
+}
